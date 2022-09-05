@@ -1,5 +1,6 @@
 #include <iostream>
 #include <iomanip>
+#include <sstream>
 
 using namespace std;
 
@@ -32,10 +33,12 @@ int main() {
       << productsName
       << endl;
 
+  ostringstream strProductsPrice;
+  strProductsPrice << setw(8) << setfill('0')
+      << right << hex << uppercase << productsPrice;
   cout << left << "Price:"
       << setw(FIELD_WIDTH - 6) << setfill(PLACEHOLDER)
-      << setw(8) << setfill('0')
-      << right << hex << uppercase << productsPrice
+      << right << strProductsPrice.str()
       << endl;
 
   cout << left << "Has cash-back:"
@@ -44,8 +47,8 @@ int main() {
       << endl;
 
   cout << left << "Max temperature:"
-      << setw(FIELD_WIDTH - 16) << setfill(PLACEHOLDER) << dec
-      << right << showpos << maxTemperature
+      << setw(FIELD_WIDTH - 16) << setfill(PLACEHOLDER)
+      << right << dec << showpos << maxTemperature
       << endl;
 
   // Finish program
