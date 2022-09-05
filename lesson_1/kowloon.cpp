@@ -12,6 +12,7 @@ int main() {
   // Declaring variables
   string productsName;
   int productsPrice;
+  ostringstream strProductsPrice;
   bool cashbackAvailable;
   int maxTemperature;
 
@@ -33,7 +34,6 @@ int main() {
       << productsName
       << endl;
 
-  ostringstream strProductsPrice;
   strProductsPrice << setw(8) << setfill('0')
       << right << hex << uppercase << productsPrice;
   cout << left << "Price:"
