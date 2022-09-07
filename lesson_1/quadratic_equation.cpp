@@ -50,11 +50,13 @@ int main() {
      << "x = " << setw(FIELD_WIDTH) << right << x1 << endl;
 
   } else if (a == 0 && b == 0) {
+    // Case with a == 0 and b == 0
     if (c == 0) {
       cout << "There are an infinite number of solutions!" << endl;
     } else {
       cout << "There are no solutions!" << endl;
     };
+
   } else if (discriminant < 0) {
     // Case with no solutions
     cout << "There are no solutions!" << endl;
