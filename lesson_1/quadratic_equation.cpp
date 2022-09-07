@@ -42,7 +42,20 @@ int main() {
   discriminant = discriminantCalculator(a, b, c);
 
   // Calculate and output the solution
-  if (discriminant < 0) {
+  if (a == 0 && b != 0) {
+    // Case with one solution (a == 0)
+    x1 = -c / b;
+
+    cout << "There are one solution:" << endl
+     << "x = " << setw(FIELD_WIDTH) << right << x1 << endl;
+
+  } else if (a == 0 && b == 0) {
+    if (c == 0) {
+      cout << "There are an infinite number of solutions!" << endl;
+    } else {
+      cout << "There are no solutions!" << endl;
+    };
+  } else if (discriminant < 0) {
     // Case with no solutions
     cout << "There are no solutions!" << endl;
 
