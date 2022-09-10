@@ -39,14 +39,14 @@ int main() {
   cout << left << "Price:"
       << setw(FIELD_WIDTH - 6) << setfill(PLACEHOLDER)
       << right << strProductsPrice.str()
-      << endl;
+      << endl
 
-  cout << left << "Has cash-back:"
+      << left << "Has cash-back:"
       << setw(FIELD_WIDTH - 14) << setfill(PLACEHOLDER)
       << right << boolalpha << cashbackAvailable
-      << endl;
+      << endl
 
-  cout << left << "Max temperature:"
+      << left << "Max temperature:"
       << setw(FIELD_WIDTH - 16) << setfill(PLACEHOLDER)
       << right << dec << showpos << maxTemperature
       << endl;

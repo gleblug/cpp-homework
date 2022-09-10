@@ -38,44 +38,48 @@ int main() {
 
   cout << endl;
 
-  // Calculate the discriminant
-  discriminant = discriminantCalculator(a, b, c);
-
   // Calculate and output the solution
-  if (a == 0 && b != 0) {
-    // Case with one solution (a == 0)
-    x1 = -c / b;
+  if (a != 0) {
+    // Calculate the discriminant
+    discriminant = discriminantCalculator(a, b, c);
 
-    cout << "There are one solution:" << endl
-     << "x = " << setw(FIELD_WIDTH) << right << x1 << endl;
-
-  } else if (a == 0 && b == 0) {
-    // Case with a == 0 and b == 0
-    if (c == 0) {
-      cout << "There are an infinite number of solutions!" << endl;
-    } else {
+    if (discriminant < 0) {
+      // Case with no solutions
       cout << "There are no solutions!" << endl;
+
+    } else if (discriminant == 0) {
+      // Case with one solution
+      x1 = (-b + sqrt(discriminant)) / (2 * a);
+
+      cout << "There are one solution:" << endl
+        << "x = " << setw(FIELD_WIDTH) << right << x1 << endl;
+
+    } else {
+      // Case with two solutions
+      x1 = (-b + sqrt(discriminant)) / (2 * a);
+      x2 = (-b - sqrt(discriminant)) / (2 * a);
+
+      cout << "There are two solutions:" << endl
+        << "x1 = " << setw(FIELD_WIDTH) << right << x1 << endl
+        << "x2 = " << setw(FIELD_WIDTH) << right << x2 << endl;
     };
 
-  } else if (discriminant < 0) {
-    // Case with no solutions
-    cout << "There are no solutions!" << endl;
-
-  } else if (discriminant == 0) {
-    // Case with one solution
-    x1 = (-b + sqrt(discriminant)) / (2 * a);
-
-    cout << "There are one solution:" << endl
-      << "x = " << setw(FIELD_WIDTH) << right << x1 << endl;
-
   } else {
-    // Case with two solutions
-    x1 = (-b + sqrt(discriminant)) / (2 * a);
-    x2 = (-b - sqrt(discriminant)) / (2 * a);
+    if (b != 0) {
+      // Case with one solution (a == 0)
+      x1 = -c / b;
 
-    cout << "There are two solutions:" << endl
-      << "x1 = " << setw(FIELD_WIDTH) << right << x1 << endl
-      << "x2 = " << setw(FIELD_WIDTH) << right << x2 << endl;
+      cout << "There are one solution:" << endl
+       << "x = " << setw(FIELD_WIDTH) << right << x1 << endl;
+
+    } else {
+      // Case with a == 0 and b == 0
+      if (c == 0) {
+        cout << "There are an infinite number of solutions!" << endl;
+      } else {
+        cout << "There are no solutions!" << endl;
+      };
+    }
   };
 
   // Finish program
