@@ -9,7 +9,7 @@ MAAAAIIIN!
 
 
 void print_smth() {
-  std::cout << "Print smth" << std::endl;
+  std::cout << "Print smth important: " << 3.1415926535 << std::endl;
 }
 
 void greeting(std::string name) {
@@ -24,7 +24,7 @@ int main() {
   const std::string NAME = "Umar";
 
   std::cout << "Hello git!" << std::endl;
-  
+
   greeting(NAME);
   print_smth();
   ending(NAME);
