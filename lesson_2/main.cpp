@@ -7,12 +7,12 @@ MAAAAIIIN!
 #include <iomanip>
 #include <sstream>
 
-int main() {
-  std::cout << "Hello git!" << std::endl;
-  
-  print_smth();
+void print_smth() {
+  std::cout << "Print smth and " << 3.1415 << std::endl;
 }
 
-void print_smth() {
-  std::cout << "Print smth" << std::endl;
+int main() {
+  std::cout << "Hello git!" << std::endl;
+
+  print_smth();
 }
