@@ -21,7 +21,11 @@ void ending(std::string name) {
 }
 
 int main() {
+  const std::string NAME = "Umar";
+
   std::cout << "Hello git!" << std::endl;
-  greeting("Umar");
+  
+  greeting(NAME);
   print_smth();
+  ending(NAME);
 }
