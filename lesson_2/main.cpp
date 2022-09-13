@@ -18,6 +18,6 @@ void greeting(std::string name) {
 
 int main() {
   std::cout << "Hello git!" << std::endl;
-
+  greeting("Umar");
   print_smth();
 }
