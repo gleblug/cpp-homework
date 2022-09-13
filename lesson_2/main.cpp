@@ -9,7 +9,8 @@ MAAAAIIIN!
 
 int main() {
   std::cout << "Hello git!" << std::endl;
-
+  
+  print_smth();
 }
 
 void print_smth() {
