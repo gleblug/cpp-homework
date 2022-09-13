@@ -1,4 +1,12 @@
-int main(int argc, char const *argv[]) {
-  /* code */
-  return 0;
+/*
+Main program
+*/
+
+#include <iostream>
+#include <iomanip>
+#include <sstream>
+
+int main() {
+  std::cout << "Hello git!" << std::endl;
+
 }
