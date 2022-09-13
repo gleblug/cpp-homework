@@ -16,6 +16,10 @@ void greeting(std::string name) {
   std::cout << "Hello, " << name << "!" << std::endl;
 }
 
+void ending(std::string name) {
+  std::cout << "Goodbye, " << name << "!" << std::endl;
+}
+
 int main() {
   std::cout << "Hello git!" << std::endl;
   greeting("Umar");
