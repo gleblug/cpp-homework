@@ -1,5 +1,6 @@
 /*
 Main program
+MAAAAIIIN!
 */
 
 #include <iostream>
