@@ -13,6 +13,7 @@ void print_smth() {
 }
 
 void print_smth_very_important() {
+  std::cout << "Print smth very important: " << "192.168.0.1" << std::endl;
 }
 
 void greeting(std::string name) {
