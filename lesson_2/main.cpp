@@ -21,7 +21,7 @@ void ending(std::string name) {
 }
 
 void new_func() {
-  
+  std::cout << "New func!" << std::endl;
 }
 
 int main() {
