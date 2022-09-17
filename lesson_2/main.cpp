@@ -12,6 +12,9 @@ void print_smth() {
   std::cout << "Print smth important: " << 3.1415926535 << std::endl;
 }
 
+void print_smth_very_important() {
+}
+
 void greeting(std::string name) {
   std::cout << "Hello, " << name << "!" << std::endl;
 }
