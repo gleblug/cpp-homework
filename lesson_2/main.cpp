@@ -20,6 +20,10 @@ void ending(std::string name) {
   std::cout << "Goodbye, " << name << "!" << std::endl;
 }
 
+void new_func() {
+  std::cout << "New func!" << std::endl;
+}
+
 int main() {
   const std::string NAME = "Umar";
 
