@@ -28,4 +28,5 @@ int main() {
   greeting(NAME);
   print_smth();
   ending(NAME);
+  print_smth();
 }
