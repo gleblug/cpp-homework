@@ -21,7 +21,7 @@ out:
   "Рассветы" "на" "Арракисе" "прекрасны" "!.."
 
   WARN: maybe wrong punctuation mark:
-  19th character ==> "!.."
+  31 character ==> "!.."
 */
 
 
@@ -30,20 +30,25 @@ out:
 #include <string>
 #include <array>
 
+// Функция пользовательского ввода
 std::string userInput() {
+  // Переменная для хранения пользовательского ввода
   std::string text;
-
-  std::cout << "Input a text fragment:" << std::endl;
+  // Для удобства пользовательского ввода выводим в консоль синюю строку с
+  // просьбой ввести отрывок текста
+  std::cout << "\x1B[36m" << "Input a text fragment:" << "\033[0m" << std::endl;
   std::getline(std::cin, text);
-  text += " ";
+  text += " ";  // добавление пробела необходимо из-за того, что последний
+                // символ в строке не обрабаотывается, как и буфер -- костыль :(
 
   std::cout << std::endl;
 
   return text;
 }
 
+// Функция для вывода в косноль слов и знаков пунктуации
 void printOutput(std::vector<std::string> const &container) {
-  std::cout << "Formatted text:" << std::endl;
+  std::cout << "\x1B[32m" << "Formatted text:" << "\033[0m" << std::endl;
 
   for (std::string const &word: container) {
      std::cout << "[" << word << "] ";
@@ -52,9 +57,12 @@ void printOutput(std::vector<std::string> const &container) {
   std::cout << '\n'<< std::endl;
 }
 
+// Функция для вывода в консоль очереди ошибок (в общем случае можно хранить
+// в том же массиве код ошибки и выводить различные сообщения)
 void printWarnings(std::vector<std::array<std::string, 2>> const &warnings) {
   if (! warnings.empty()) {
-    std::cout << "WARN: maybe wrong punctuation mark on:" << std::endl;
+    std::cout << "\x1B[33m" << "WARN: maybe wrong punctuation mark on:"
+      << "\033[0m" << std::endl;
 
     for (std::array<std::string, 2> const &warning: warnings) {
       std::cout
@@ -154,13 +162,16 @@ int main() {
         // Случай с буквой или пробелом:
         // Проверяем буфер на пустоту
         if (! buffer.empty()){
-          if (lastSymbolIsPunctMark && (!punctuationMarkIsCorrect(buffer))) {
-            // Если в буфере знак препинания и он некорректен, создаём запись об
-            // ошибке, включающую индекс
-            std::string warnIndex(std::to_string(counter - buffer.length()));
-            std::array<std::string, 2> warning{warnIndex, buffer};
+          if (lastSymbolIsPunctMark) {
+            // В буфере символ
+            if (! punctuationMarkIsCorrect(buffer)) {
+              // И символ некорректный
+              std::string warnIndex(std::to_string(counter - buffer.length()));
+              std::array<std::string, 2> warning{warnIndex, buffer};
 
-            warningsContainer.push_back(warning);
+              warningsContainer.push_back(warning);
+            }
+            // Но даже некорректный символ мы оставляем в выводе :)
             outputContainer.push_back(buffer);
             buffer = "";
           } else if (symbol == ' ') {
@@ -172,18 +183,17 @@ int main() {
             // если это буква, добавляем её к буферу
             buffer += symbol;
           }
-        } else {
-          if (symbol != ' ') {
-            buffer += symbol;
-          }
+        } else if (symbol != ' ') {
+          // в случае пустого буфера игнорируем пробелы
+          buffer += symbol;
         }
         lastSymbolIsPunctMark = false;
         break;
     }
   }
-
+  // Вызываем функцию для вывода результата в консоль
   printOutput(outputContainer);
-
+  // Вызываем функцию для вывода очереди ошибок в консоль
   printWarnings(warningsContainer);
 
   return 0;
