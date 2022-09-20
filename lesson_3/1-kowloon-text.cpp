@@ -30,30 +30,63 @@ out:
 #include <string>
 #include <array>
 
+std::string userInput() {
+  std::string text;
+
+  std::cout << "Input a text fragment:" << std::endl;
+  std::getline(std::cin, text);
+  text += " ";
+
+  std::cout << std::endl;
+
+  return text;
+}
+
 void printOutput(std::vector<std::string> const &container) {
+  std::cout << "Formatted text:" << std::endl;
+
   for (std::string const &word: container) {
      std::cout << "[" << word << "] ";
   }
 
-  std::cout << std::endl;
+  std::cout << '\n'<< std::endl;
 }
 
 void printWarnings(std::vector<std::array<std::string, 2>> const &warnings) {
-  std::cout << "WARN: maybe wrong punctuation mark on:" << std::endl;
+  if (! warnings.empty()) {
+    std::cout << "WARN: maybe wrong punctuation mark on:" << std::endl;
 
-  for (std::array<std::string, 2> const &warning: warnings) {
-    std::cout
-      << warning.at(0) << " character ==> \""
-      << warning.at(1) << "\"" << std::endl;
+    for (std::array<std::string, 2> const &warning: warnings) {
+      std::cout
+        << warning.at(0) << " character --> \""
+        << warning.at(1) << "\"" << std::endl;
+    }
   }
 }
 
 bool punctuationMarkIsCorrect(std::string const &mark) {
-  if (mark == "..." || mark == "?!" || mark == "--") {
-    return true;
-  } else {
-    return false;
+  const std::vector<std::string> listOfMarks{
+    "...",
+    "?!",
+    "--",
+    ".",
+    ",",
+    ":",
+    ";",
+    "\"",
+    "?",
+    "!",
+    "(",
+    ")"
+  };
+
+  for (std::string const &availableMark: listOfMarks) {
+    if (mark == availableMark) {
+      return true;
+    }
   }
+
+  return false;
 }
 
 int main() {
@@ -71,8 +104,7 @@ int main() {
 
 
   // User input (raw text)
-  std::getline(std::cin, rawText);
-
+  rawText = userInput();
 
   // Main cycle
   for(char const &symbol: rawText){
@@ -111,6 +143,8 @@ int main() {
               buffer = symbol;
             }
           }
+        } else {
+          buffer += symbol;
         }
 
         lastSymbolIsPunctMark = true;
@@ -127,29 +161,30 @@ int main() {
             std::array<std::string, 2> warning{warnIndex, buffer};
 
             warningsContainer.push_back(warning);
-          } else {
+            outputContainer.push_back(buffer);
+            buffer = "";
+          } else if (symbol == ' ') {
             // Иначе проверяем пробел ли это
-            if (symbol == ' ') {
-              // если да, пушим буфер в вывод и очищаем его
-              outputContainer.push_back(buffer);
-              buffer = "";
-            } else {
-              // если это буква, добавляем её к буферу
-              buffer += symbol;
-            }
+            // если да, пушим буфер в вывод и очищаем его
+            outputContainer.push_back(buffer);
+            buffer = "";
+          } else {
+            // если это буква, добавляем её к буферу
+            buffer += symbol;
           }
-
+        } else {
+          if (symbol != ' ') {
+            buffer += symbol;
+          }
+        }
         lastSymbolIsPunctMark = false;
         break;
-      }
     }
   }
 
   printOutput(outputContainer);
 
-  if (! warningsContainer.empty()) {
-    printWarnings(warningsContainer);
-  }
+  printWarnings(warningsContainer);
 
   return 0;
 }
