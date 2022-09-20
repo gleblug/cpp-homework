@@ -2,7 +2,7 @@
 #include <vector>
 #include <string>
 
-void inserctionSort(std::vector<int> &array) {
+void insertionSort(std::vector<int> &array) {
   size_t i(1);
   while (i < array.size()) {
     size_t j(i);
@@ -16,6 +16,7 @@ void inserctionSort(std::vector<int> &array) {
 
 void userInput(std::vector<int> &array) {
   std::cout << "Input an array of integers (0 == end)" << '\n';
+  // todo: добавить нормальный ввод массива (без ограничений)
 
   int input;
   std::cin >> input;
@@ -39,9 +40,11 @@ void outputArray(std::vector<int> const &array) {
 
 int main(int argc, char const *argv[]) {
   std::vector<int> array;
-
+  // ввод массива
   userInput(array);
-  inserctionSort(array);
+  // сортировка массива
+  insertionSort(array);
+  // вывод массива
   outputArray(array);
 
   return 0;
