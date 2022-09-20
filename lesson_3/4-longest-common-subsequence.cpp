@@ -8,16 +8,14 @@
 #include <vector>
 #include <string>
 
-// служебная функция вывода матрицы в консоль
-// void printMatrix(std::vector<std::vector<int>> const &matrix) {
-//   for (std::vector<int> const &row: matrix) {
-//     for (int const &elem: row) {
-//       std::cout << elem << ' ';
-//     }
-//     std::cout << '\n';
-//   }
-// }
+/*
+Заполнение матрицы по алгоритму Нидлмана-Вунша:
 
+1. Если элемент xi равен yj то в ячейке (i,j) записывается значение ячейки (i-1,j-1) с добавлением единицы
+2. Если элемент xi не равен yj то в ячейку (i,j) записывается максимум из значений(i-1,j) и (i,j-1).
+Заполнение происходит в двойном цикле по i и j с увеличением значений на единицу, таким образом на каждой
+итерации нужные на этом шаге значения ячеек уже вычислены.
+*/
 std::vector<std::vector<int>> fillDynMatrix(
   std::string const &x,
   std::string const &y
@@ -39,7 +37,8 @@ std::vector<std::vector<int>> fillDynMatrix(
   return matrix;
 }
 
-
+// Выбрав нужные элементы с помощью найденной матрицы мы находим максимальную
+// подпоследовательноcть:
 std::vector<char> LCSDyn(
   std::string const &x,
   std::string const &y
@@ -78,9 +77,10 @@ int main(int argc, char const *argv[]) {
   std::cin >> x >> y;
   std::cout << std::endl;
 
-  // std::vector<std::vector<int>> matrix = fillDynMatrix(x, y);
+  // Максимальная подпоследовательноcть
   maxSubsequence = LCSDyn(x, y);
 
+  // final output
   std::cout << "Longest common subsequence (with lenght of " << maxSubsequence.size() << "):" << '\n';
   for (size_t i = 1; i <= maxSubsequence.size(); i++) {
     std::cout << maxSubsequence.at(maxSubsequence.size() - i);
