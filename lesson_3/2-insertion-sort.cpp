@@ -3,14 +3,10 @@
 #include <string>
 
 void insertionSort(std::vector<int> &array) {
-  size_t i(1);
-  while (i < array.size()) {
-    size_t j(i);
-    while (j > 0 && array.at(j - 1) > array.at(j)) {
+  for (size_t i = 1; i < array.size(); i++) {
+    for (size_t j = i; j > 0 && array.at(j - 1) > array.at(j); j--) {
       std::swap(array.at(j), array.at(j - 1));
-      j--;
     }
-    i++;
   }
 }
 
