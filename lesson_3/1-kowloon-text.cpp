@@ -173,7 +173,7 @@ int main() {
             }
             // Но даже некорректный символ мы оставляем в выводе :)
             outputContainer.push_back(buffer);
-            buffer = "";
+            buffer.clear();
 
             if (symbol != ' ') {
               buffer += symbol;
@@ -182,7 +182,7 @@ int main() {
             // Иначе проверяем пробел ли это
             // если да, пушим буфер в вывод и очищаем его
             outputContainer.push_back(buffer);
-            buffer = "";
+            buffer.clear();
           } else {
             // если это буква, добавляем её к буферу
             buffer += symbol;
