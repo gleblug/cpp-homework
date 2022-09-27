@@ -73,7 +73,7 @@ void printWarnings(std::vector<std::array<std::string, 2>> const &warnings) {
 }
 
 bool punctuationMarkIsCorrect(std::string const &mark) {
-  const std::vector<std::string> listOfMarks{
+  const std::vector<std::string> LIST_OF_MARKS{
     "...",
     "?!",
     "--",
@@ -88,7 +88,7 @@ bool punctuationMarkIsCorrect(std::string const &mark) {
     ")"
   };
 
-  for (std::string const &availableMark: listOfMarks) {
+  for (std::string const &availableMark: LIST_OF_MARKS) {
     if (mark == availableMark) {
       return true;
     }
