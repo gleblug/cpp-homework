@@ -3,7 +3,7 @@
 using namespace std;
 
 int main() {
-  // Declaring varibles
+  // Declaring varibles (every type!)
   int x;
   int y;
 
@@ -16,10 +16,9 @@ int main() {
   cin >> y;
 
   // Swapping algorithm
-  y += x;
-  x -= y;
-  y += x;
-  x = -x;
+  x = x ^ y;
+  y = x ^ y;
+  x = x ^ y;
 
   // Output values
   cout << endl
