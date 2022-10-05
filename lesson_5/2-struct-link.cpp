@@ -90,31 +90,41 @@ void Student::print_info() {
 
 
 int main(int argc, char const *argv[]) {
-  std::vector<Student> mipt_students{
-    {"Ivan", "Shvydkiy", "B01-201"},
-    {"Maxim", "Kotin", "B04-005"},
-    {"Petr", "Kovalsky", "M02-102"},
-    {"Albina", "Morosheva", "B03-203"},
-    {"Ekaterina", "Zaharova", "B04-107"},
-  };
+  Student ivan{"Ivan", "Shvydkiy", "B01-201"};
+  Student maxim{"Maxim", "Kotin", "B04-005"};
+  Student albina{"Albina", "Morosheva", "B03-203"};
 
-  std::vector<Lecture> mipt_lectures{
-    {"Mathematical analysis", "Some math quantors"},
-    {"General physics", "Some physics stuff"},
-    {"Informatics", "A lot of programming"},
-    {"English", "Learn new vocabulary and grammar"},
-    {"PE", "The most important subject at MIPT"},
-  };
+  Lecture math{"Mathematical analysis", "Some math quantors"};
+  Lecture physics{"General physics", "Some physics stuff"};
+  Lecture infornatics{"Informatics", "A lot of programming"};
+  Lecture english{"English", "Learn new vocabulary and grammar"};
 
-  mipt_lectures.at(0).add_student(mipt_students.at(0));
-  mipt_lectures.at(0).add_student(mipt_students.at(0));
-  mipt_lectures.at(0).add_student(mipt_students.at(3));
-  mipt_lectures.at(0).add_student(mipt_students.at(2));
-  mipt_lectures.at(1).add_student(mipt_students.at(0));
-  mipt_lectures.at(4).add_student(mipt_students.at(0));
+  math.add_student(ivan);
+  math.add_student(maxim);
+  math.add_student(albina);
 
-  mipt_lectures.at(0).print_info();
-  mipt_students.at(0).print_info();
+  math.add_student(maxim); // OUT: error
+
+  math.print_info();
+
+  std::cout << "=============================="<< '\n';
+
+  physics.add_student(ivan);
+  english.add_student(ivan);
+
+  ivan.print_info(); // OUT: Ivan
+
+  std::cout << "=============================="<< '\n';
+
+  physics.kick_student(albina); // OUT: error
+
+  math.kick_student(ivan);
+
+  math.print_info();
+
+  std::cout << "=============================="<< '\n';
+
+  ivan.print_info();
 
   // mipt
   return 0;
