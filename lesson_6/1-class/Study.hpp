@@ -3,54 +3,61 @@
 
 class Student {
 public:
-  Student(std::string name,
-          std::string surname,
-          unsigned short course=1,
-          std::string phystech_school="FEFM",
-          bool is_academ=false);
+  Student(
+    std::string const& name,
+    std::string const& surname,
+    unsigned int course=1,
+    std::string phystech_school="FEFM",
+    bool is_academ=false
+  );
 
-  std::string full_name() const;
+  const auto full_name() const {
+    return m_name + " " + m_surname;
+  }
 
-  bool in_academ() const;
+  auto in_academ() const {
+    return m_is_academ;
+  }
 
   void print_info() const;
 
-  unsigned int get_id() const {
-    return this->personal_id;
+  auto get_id() const {
+    return personal_id;
   }
 
 private:
-  std::string name;
-  std::string surname;
-  unsigned short course;
-  std::string phystech_school;
+  std::string m_name;
+  std::string m_surname;
+  unsigned int m_course;
+  std::string m_phystech_school;
   unsigned int personal_id;
-  bool is_academ;
+  bool m_is_academ;
 };
-
 
 class Botalka {
 public:
-  Botalka(unsigned short count_of_seats=20);
+  Botalka(
+    unsigned int count_of_seats=20
+  );
 
   void set_location(std::string location) {
-    this->location = location;
+    m_location = location;
   }
 
   void came_student(Student const& student);
 
   void left_student(Student const& student);
 
-  int is_student_here(Student const& student);
+  int student_place(Student const& student) const;
 
   int vacancies_count() const {
-    return this->count_of_seats - this->students_id_list.size();
+    return m_count_of_seats - std::size(m_students_id_list);
   }
 
   void print_info() const;
 
 private:
-  unsigned short count_of_seats;
-  std::vector<unsigned int> students_id_list;
-  std::string location;
+  unsigned int m_count_of_seats;
+  std::vector<unsigned int> m_students_id_list;
+  std::string m_location;
 };
