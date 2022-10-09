@@ -31,7 +31,7 @@ int main(int argc, char const *argv[]) {
   // print_time(max_time);
   print_time(new_year);
 
-  // std::cout << sizeof(max_time) << '\n';
+  std::cout << sizeof(Time) << '\n';
 
   return 0;
 }
