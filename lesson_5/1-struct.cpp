@@ -3,82 +3,83 @@
 #include <string>
 #include <iomanip>
 #include <algorithm>
+#include <iterator>
 
 
 struct Student {
-  Student(std::string name,
-          std::string surname,
-          unsigned short course=1,
+  Student(std::string const& name,
+          std::string const& surname,
+          unsigned int course=1,
           std::string phystech_school="FEFM",
           bool is_academ=false):
-  _name(name),
-  _surname(surname),
-  course(course),
-  phystech_school(phystech_school),
-  _is_academ(is_academ) {
+  m_name(name),
+  m_surname(surname),
+  m_course(course),
+  m_phystech_school(phystech_school),
+  m_is_academ(is_academ) {
     static unsigned int id = 1;
 
     personal_id = id++;
   }
 
-  std::string full_name() const {
-    return _name + " " + _surname;
+  const auto full_name() const {
+    return m_name + " " + m_surname;
   }
 
-  bool in_academ() const {
-    return _is_academ;
+  auto in_academ() const {
+    return m_is_academ;
   }
 
   void print_info() const {
     int const width = 25;
 
-    std::cout << std::setw(width) << std::left << "Name:" << _name << '\n'
-              << std::setw(width) << std::left << "Surname:" << _surname << '\n'
-              << std::setw(width) << std::left << "Course:" << course << '\n'
+    std::cout << std::setw(width) << std::left << "Name:" << m_name << '\n'
+              << std::setw(width) << std::left << "Surname:" << m_surname << '\n'
+              << std::setw(width) << std::left << "Course:" << m_course << '\n'
               << std::setw(width) << std::left << "ID:" << personal_id << '\n' << std::endl;
   }
 
-  std::string _name;
-  std::string _surname;
-  unsigned short course;
-  std::string phystech_school;
+  std::string m_name;
+  std::string m_surname;
+  unsigned int m_course;
+  std::string m_phystech_school;
   unsigned int personal_id;
-  bool _is_academ;
+  bool m_is_academ;
 };
 
 
 struct Botalka {
-  Botalka(unsigned short count_of_seats=20):
-  _count_of_seats(count_of_seats) {
-  }
+  Botalka(unsigned int count_of_seats=20):
+    m_count_of_seats(count_of_seats) {  }
 
   void set_location(std::string location) {
-    _location = location;
+    m_location = location;
   }
 
   void came_student(Student const& student) {
-    int is_here = is_student_here(student);
-    if (is_here != -1) {
-      std::cerr << "Student is already in " << _location <<"!\n" << '\n';
+    int place = student_place(student);
+    if (place != -1) {
+      std::cerr << "Student is already in " << m_location <<"!\n" << '\n';
     } else if (vacancies_count() <= 0) {
-      std::cerr << "Botalka in " << _location << " is crowded!\n" << '\n';
+      std::cerr << "Botalka in " << m_location << " is crowded!\n" << '\n';
     } else {
-      _students_id_list.push_back(student.personal_id);
+      m_students_id_list.push_back(student.personal_id);
     }
   }
 
   void left_student(Student const& student) {
-    int is_here = is_student_here(student);
-    if (is_here == -1) {
-      std::cerr << "There are no student with ID " << student.personal_id << " in " << _location << '\n' << '\n';
+    int place = student_place(student);
+    if (place == -1) {
+      std::cerr << "There are no student with ID " << student.personal_id << " in " << m_location << '\n' << '\n';
     } else {
-      _students_id_list.erase(std::begin(_students_id_list) + is_here);
+      m_students_id_list.erase(std::next(std::begin(m_students_id_list), place));
     }
   }
+  // for (auto const& current_student_id: m_students_id_list) {
 
-  int is_student_here(Student const& student) const {
-    for (size_t i = 0; i < _students_id_list.size(); i++) {
-      if (_students_id_list.at(i) == student.personal_id) {
+  int student_place(Student const& student) const {
+    for (size_t i = 0; i < std::size(m_students_id_list); i++) {
+      if (m_students_id_list[i] == student.personal_id) {
         return i;
       }
     }
@@ -86,17 +87,17 @@ struct Botalka {
   }
 
   int vacancies_count() const {
-    return _count_of_seats - _students_id_list.size();
+    return m_count_of_seats - std::size(m_students_id_list);
   }
 
   void print_info() const {
     int const width = 25;
 
-    std::cout << std::setw(width) << std::left << "Location:" << _location << '\n'
-              << std::setw(width) << std::left << "Count of seats:" << _count_of_seats << '\n'
+    std::cout << std::setw(width) << std::left << "Location:" << m_location << '\n'
+              << std::setw(width) << std::left << "Count of seats:" << m_count_of_seats << '\n'
               << std::setw(width) << std::left << "Number of vacancies:" << vacancies_count() << '\n'
               << std::setw(width) << std::left << "Students:" << '\n';
-    for (auto& stud_id: _students_id_list) {
+    for (auto stud_id: m_students_id_list) {
       std::cout << std::setw(width) << std::left << " " << stud_id << '\n';
     }
 
@@ -104,9 +105,9 @@ struct Botalka {
   }
 
 
-  unsigned short _count_of_seats;
-  std::vector<int> _students_id_list;
-  std::string _location;
+  unsigned int m_count_of_seats;
+  std::vector<unsigned int> m_students_id_list;
+  std::string m_location;
 };
 
 
