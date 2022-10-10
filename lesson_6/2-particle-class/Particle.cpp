@@ -3,43 +3,31 @@
 #include <iostream>
 
 
-Particle::Particle(
-  std::string const& name,
-  double lifetime,
-  double mass,
-  double spin,
-  double electrical_charge,
-  double magnetic_moment
-):
-  name(name),
-  lifetime(lifetime),
-  mass(mass),
-  spin(spin),
-  electrical_charge(electrical_charge),
-  magnetic_moment(magnetic_moment)
+Particle::Particle(std::string const& name):
+  name(name)
 {  }
 
 void Particle::set_mass(double value, std::string const& system_of_units) {
   this->mass = input_converter("mass", value, system_of_units);
 }
-double Particle::get_mass(std::string const& system_of_units) const {
-
+double Particle::get_mass(std::string const& system_of_units) {
+  return output_converter("mass", this->mass, system_of_units);
 }
 
 
 void Particle::set_electrical_charge(double value, std::string const& system_of_units) {
   this->electrical_charge = input_converter("electrical_charge", value, system_of_units);
 }
-double Particle::get_electrical_charge(std::string const& system_of_units) const {
-
+double Particle::get_electrical_charge(std::string const& system_of_units) {
+  return output_converter("electrical_charge", this->electrical_charge, system_of_units);
 }
 
 
 void Particle::set_magnetic_moment(double value, std::string const& system_of_units) {
   this->magnetic_moment = input_converter("magnetic_moment", value, system_of_units);
 }
-double Particle::get_magnetic_moment(std::string const& system_of_units) const {
-
+double Particle::get_magnetic_moment(std::string const& system_of_units) {
+  return output_converter("magnetic_moment", this->magnetic_moment, system_of_units);
 }
 
 

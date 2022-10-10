@@ -3,14 +3,7 @@
 
 class Particle {
 public:
-  Particle(
-    std::string const& name,
-    double lifetime,
-    double mass,
-    double spin,
-    double electrical_charge,
-    double magnetic_moment
-  );
+  Particle(std::string const& name);
 
   void set_lifetime(double lifetime) {
     this->lifetime = lifetime;
@@ -27,13 +20,13 @@ public:
   }
 
   void set_mass(double mass, std::string const& system_of_units);
-  double get_mass(std::string const& system_of_units) const;
+  double get_mass(std::string const& system_of_units);
 
   void set_electrical_charge(double electrical_charge, std::string const& system_of_units);
-  double get_electrical_charge(std::string const& system_of_units) const;
+  double get_electrical_charge(std::string const& system_of_units);
 
   void set_magnetic_moment(double magnetic_moment, std::string const& system_of_units);
-  double get_magnetic_moment(std::string const& system_of_units) const;
+  double get_magnetic_moment(std::string const& system_of_units);
 
   static std::map<std::string, double> si2cgs;
 
