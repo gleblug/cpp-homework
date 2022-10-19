@@ -6,17 +6,17 @@ public:
   Particle(std::string const& name);
 
   void set_lifetime(double lifetime) {
-    this->lifetime = lifetime;
+    m_lifetime = lifetime;
   }
   auto get_lifetime() const {
-    return lifetime;
+    return m_lifetime;
   }
 
   void set_spin(double spin) {
-    this->spin = spin;
+    m_spin = spin;
   }
   auto get_spin() const {
-    return spin;
+    return m_spin;
   }
 
   void set_mass(double mass, std::string const& system_of_units);
@@ -36,9 +36,9 @@ private:
 
   std::string name;
 
-  double lifetime;
-  double mass;
-  double spin;
-  double electrical_charge;
-  double magnetic_moment;
+  double m_lifetime;
+  double m_mass;
+  double m_spin;
+  double m_electrical_charge;
+  double m_magnetic_moment;
 };
