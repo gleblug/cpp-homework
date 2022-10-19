@@ -7,26 +7,26 @@ Particle::Particle(std::string const& name):
   name(name)
 {  }
 
-void Particle::set_mass(double value, std::string const& system_of_units) {
+void Particle::set_mass(double value, System_of_units system_of_units) {
   m_mass = input_converter("mass", value, system_of_units);
 }
-double Particle::get_mass(std::string const& system_of_units) {
+double Particle::get_mass(System_of_units system_of_units) {
   return output_converter("mass", m_mass, system_of_units);
 }
 
 
-void Particle::set_electrical_charge(double value, std::string const& system_of_units) {
+void Particle::set_electrical_charge(double value, System_of_units system_of_units) {
   m_electrical_charge = input_converter("electrical_charge", value, system_of_units);
 }
-double Particle::get_electrical_charge(std::string const& system_of_units) {
+double Particle::get_electrical_charge(System_of_units system_of_units) {
   return output_converter("electrical_charge", m_electrical_charge, system_of_units);
 }
 
 
-void Particle::set_magnetic_moment(double value, std::string const& system_of_units) {
+void Particle::set_magnetic_moment(double value, System_of_units system_of_units) {
   m_magnetic_moment = input_converter("magnetic_moment", value, system_of_units);
 }
-double Particle::get_magnetic_moment(std::string const& system_of_units) {
+double Particle::get_magnetic_moment(System_of_units system_of_units) {
   return output_converter("magnetic_moment", m_magnetic_moment, system_of_units);
 }
 
@@ -38,24 +38,28 @@ std::map<std::string, double> Particle::si2cgs({
 });
 
 
-double Particle::input_converter(std::string type, double value, std::string system_of_units) {
-  if (system_of_units == "SI") {
-    return value * Particle::si2cgs[type];
-  } else if (system_of_units == "CGS") {
-    return value;
+double Particle::input_converter(std::string type, double value, System_of_units system_of_units) {
+  switch (system_of_units) {
+    case System_of_units::SI:
+      return value * Particle::si2cgs[type];
+      break;
+    case System_of_units::CGS:
+      return value;
+      break;
+    default:
+      return -1;
   }
-
-  std::cerr << "There is no one system of units with name " << system_of_units << '\n';
-  return -1;
 }
 
-double Particle::output_converter(std::string type, double value_cgs, std::string system_of_units) {
-  if (system_of_units == "SI") {
-    return value_cgs / Particle::si2cgs[type];
-  } else if (system_of_units == "CGS") {
-    return value_cgs;
+double Particle::output_converter(std::string type, double value_cgs, System_of_units system_of_units) {
+  switch (system_of_units) {
+    case System_of_units::SI:
+      return value_cgs / Particle::si2cgs[type];
+      break;
+    case System_of_units::CGS:
+      return value_cgs;
+      break;
+    default:
+      return -1;
   }
-
-  std::cerr << "There is no one system of units with name " << system_of_units << '\n';
-  return -1;
 }

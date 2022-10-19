@@ -1,6 +1,11 @@
 #include <string>
 #include <map>
 
+enum class System_of_units {
+  SI,
+  CGS
+};
+
 class Particle {
 public:
   Particle(std::string const& name);
@@ -19,20 +24,20 @@ public:
     return m_spin;
   }
 
-  void set_mass(double mass, std::string const& system_of_units);
-  double get_mass(std::string const& system_of_units);
+  void set_mass(double mass, System_of_units system_of_units);
+  double get_mass(System_of_units system_of_units);
 
-  void set_electrical_charge(double electrical_charge, std::string const& system_of_units);
-  double get_electrical_charge(std::string const& system_of_units);
+  void set_electrical_charge(double electrical_charge, System_of_units system_of_units);
+  double get_electrical_charge(System_of_units system_of_units);
 
-  void set_magnetic_moment(double magnetic_moment, std::string const& system_of_units);
-  double get_magnetic_moment(std::string const& system_of_units);
+  void set_magnetic_moment(double magnetic_moment, System_of_units system_of_units);
+  double get_magnetic_moment(System_of_units system_of_units);
 
   static std::map<std::string, double> si2cgs;
 
 private:
-  double input_converter(std::string type, double value, std::string system_of_units);
-  double output_converter(std::string type, double value, std::string system_of_units);
+  double input_converter(std::string type, double value, System_of_units system_of_units);
+  double output_converter(std::string type, double value, System_of_units system_of_units);
 
   std::string name;
 
