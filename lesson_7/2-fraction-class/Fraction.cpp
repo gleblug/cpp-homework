@@ -2,6 +2,7 @@
 #include <string>
 #include <cmath>
 #include <iostream>
+#include <numeric>
 
 namespace math {
 
@@ -65,6 +66,13 @@ namespace math {
     frac.denominator = std::stoi(str_den);
 
     return stream;
+  }
+
+  void Fraction::simplify()
+  {
+    int gcd = std::gcd(numerator, denominator);
+    numerator %= gcd;
+    denominator %= gcd;
   }
 
 }
