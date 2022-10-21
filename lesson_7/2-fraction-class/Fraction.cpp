@@ -75,4 +75,64 @@ namespace math {
     denominator %= gcd;
   }
 
+  Fraction & Fraction::operator+=(const Fraction & other)
+  {
+    numerator += other.numerator;
+    simplify();
+
+    return (*this);
+  }
+
+  Fraction & Fraction::operator-= (const Fraction & other)
+  {
+    numerator -= other.numerator;
+    simplify();
+
+    return (*this);
+  }
+
+  Fraction & Fraction::operator*= (const Fraction & other)
+  {
+    numerator *= other.numerator;
+    denominator *= other.denominator;
+    simplify();
+
+    return (*this);
+  }
+
+  Fraction & Fraction::operator/= (const Fraction & other)
+  {
+    numerator /= other.numerator;
+    denominator /= other.denominator;
+    simplify();
+
+    return (*this);
+  }
+
+  Fraction operator+ (const Fraction & lhs, const Fraction & rhs) { return Fraction(lhs) += rhs; }
+  Fraction operator- (const Fraction & lhs, const Fraction & rhs) { return Fraction(lhs) -= rhs; }
+  Fraction operator* (const Fraction & lhs, const Fraction & rhs) { return Fraction(lhs) *= rhs; }
+  Fraction operator/ (const Fraction & lhs, const Fraction & rhs) { return Fraction(lhs) /= rhs; }
+
+  bool operator== (const Fraction & lhs, const Fraction & rhs)
+  {
+
+  }
+  bool operator!= (const Fraction & lhs, const Fraction & rhs)
+  {
+
+  }
+
+  bool operator< (const Fraction & lhs, const Fraction & rhs);
+  bool operator> (const Fraction & lhs, const Fraction & rhs);
+
+  bool operator<= (const Fraction & lhs, const Fraction & rhs);
+  bool operator>= (const Fraction & lhs, const Fraction & rhs);
+
+  Fraction & Fraction::operator++();
+  Fraction & Fraction::operator--();
+
+  Fraction Fraction::operator++(int);
+  Fraction Fraction::operator--(int);
+
 }
