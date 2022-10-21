@@ -221,5 +221,9 @@ int main(int argc, char const *argv[]) {
   std::cout << "length b = " << b.length() << '\n';
   std::cout << "c = " << c << '\n';
 
+  std::cout << "Input an array (splitter = ' '):" << '\n';
+  std::cin >> b;
+  std::cout << b << '\n';
+
   return 0;
 }
