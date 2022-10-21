@@ -48,6 +48,8 @@ public:
 
   // concatenation operator
   friend Array operator+ (const Array & lhs, const Array & rhs);
+
+  size_t length () const;
 };
 
 Array::Array():
@@ -115,7 +117,7 @@ Array::~Array()
 std::ostream & operator<< (std::ostream & stream, const Array & array)
 {
   for (size_t i = 0; i < array.m_length; i++) {
-    stream << array.m_data[i];
+    stream << array.m_data[i] << ' ';
   }
 
   return stream;
@@ -203,12 +205,21 @@ Array operator+(const Array & lhs, const Array & rhs)
   return array;
 }
 
+size_t Array::length() const {
+  return m_length;
+}
+
 
 int main(int argc, char const *argv[]) {
   Array a = {1, 2, 3, 4};
   Array b = {4, 6, 7};
 
   std::cout << a + b << '\n';
+
+  Array c = std::move(b);
+
+  std::cout << "length b = " << b.length() << '\n';
+  std::cout << "c = " << c << '\n';
 
   return 0;
 }
