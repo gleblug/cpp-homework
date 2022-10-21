@@ -26,6 +26,8 @@ namespace math {
 
     Fraction () = default;
 
+    Fraction (int number);
+
     Fraction (double number);
 
     Fraction (int num, int den);
@@ -42,13 +44,14 @@ namespace math {
 
     Fraction reverse () const;
 
+    int integer_part () const;
+
     operator double ();
 
     Fraction & operator+= (const Fraction & other);
     Fraction & operator-= (const Fraction & other);
     Fraction & operator*= (const Fraction & other);
     Fraction & operator/= (const Fraction & other);
-
 
     friend Fraction operator+ (const Fraction & lhs, const Fraction & rhs);
     friend Fraction operator- (const Fraction & lhs, const Fraction & rhs);
@@ -64,5 +67,10 @@ namespace math {
     friend bool operator<= (const Fraction & lhs, const Fraction & rhs);
     friend bool operator>= (const Fraction & lhs, const Fraction & rhs);
 
+    Fraction& operator++();
+    Fraction& operator--();
+
+    Fraction operator++(int);
+    Fraction operator--(int);
   };
 }
