@@ -24,6 +24,7 @@ int main(int argc, char const *argv[]) {
             << "fractional part a = " << a.fractional_part()  << '\n'
             << "--------------------"                         << '\n'
             << "a == b ? " << std::boolalpha << (a == b)      << '\n'
+            << "a != b ? " << std::boolalpha << (a != b)      << '\n'
             << "a > b  ? " << std::boolalpha << (a > b)       << '\n'
             << "a < b  ? " << std::boolalpha << (a < b)       << '\n'
             << "--------------------"                         << '\n'

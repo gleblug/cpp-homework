@@ -123,6 +123,7 @@ namespace math {
     minus = ((int)minus + (int)other.minus) % 2;
     numerator *= other.numerator;
     denominator *= other.denominator;
+
     simplify();
 
     return (*this);
@@ -133,6 +134,7 @@ namespace math {
     minus = ((int)minus + (int)other.minus) % 2;
     numerator *= other.denominator;
     denominator *= other.numerator;
+    
     simplify();
 
     return (*this);
@@ -156,11 +158,11 @@ namespace math {
 
   bool operator< (const Fraction & lhs, const Fraction & rhs)
   {
-    return (lhs.get_numerator() * rhs.denominator) < (rhs.get_numerator() * lhs.denominator);
+    return (lhs.get_numerator() * rhs.get_denominator()) < (rhs.get_numerator() * lhs.get_denominator());
   }
   bool operator> (const Fraction & lhs, const Fraction & rhs)
   {
-    return (lhs.get_numerator() * rhs.denominator) > (rhs.get_numerator() * lhs.denominator);
+    return (lhs.get_numerator() * rhs.get_denominator()) > (rhs.get_numerator() * lhs.get_denominator());
   }
 
   bool operator<= (const Fraction & lhs, const Fraction & rhs)
