@@ -37,7 +37,7 @@ namespace math {
     friend std::ostream & operator<< (std::ostream & stream, const Fraction & frac);
     friend std::istream & operator>> (std::istream & stream, Fraction & frac);
 
-    unsigned int get_numerator () const {
+    int get_numerator () const {
       return minus ? -numerator : numerator;
     }
     unsigned int get_denominator () const {
@@ -46,10 +46,7 @@ namespace math {
 
     void simplify ();
 
-    Fraction reverse () const
-    {
-      return Fraction(get_denominator(), get_numerator());
-    };
+    Fraction reverse () const;
 
     int integer_part () const {
       return (int)(get_numerator() / get_denominator());

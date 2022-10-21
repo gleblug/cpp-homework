@@ -80,6 +80,16 @@ namespace math {
     denominator /= gcd;
   }
 
+  Fraction Fraction::reverse () const
+  {
+    if (numerator) {
+      return Fraction(get_denominator(), get_numerator());
+    }
+
+    std::cerr << "~~~ Division by zero! ~~~" << '\n';
+    return Fraction(1);
+  }
+
   Fraction & Fraction::operator+=(const Fraction & other)
   {
     long int numerator_;
