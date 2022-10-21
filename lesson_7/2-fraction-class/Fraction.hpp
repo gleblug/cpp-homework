@@ -55,7 +55,11 @@ namespace math {
       return (int)(get_numerator() / get_denominator());
     };
 
-    operator double () {
+    Fraction fractional_part() const {
+      return Fraction(get_numerator() - integer_part() * get_denominator(), get_denominator());
+    };
+
+    operator double () const {
       return get_numerator() / get_denominator();
     };
 

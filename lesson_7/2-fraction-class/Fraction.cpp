@@ -42,28 +42,33 @@ namespace math {
 
   std::ostream & operator<< (std::ostream & stream, const Fraction & frac)
   {
-    stream << (frac.minus ? "-" : "") << frac.numerator << '/' << frac.denominator;
+    stream << frac.get_numerator() << '/' << frac.denominator;
 
     return stream;
   }
 
   std::istream & operator>> (std::istream & stream, Fraction & frac)
   {
-    std::string line;
+    long int numerator;
+
     std::string str_num;
     std::string str_den;
+    std::string line;
     size_t div_ind;
 
-    std::getline(stream, line);
-
+    stream >> line;
     div_ind = line.find("/");
-    frac.minus = (line[0] == '-');
 
-    str_num = line.substr((size_t)frac.minus, div_ind - (size_t)frac.minus);
-    str_den = line.substr();
+    str_num = line.substr(0, div_ind);
+    str_den = line.substr(div_ind + 1, line.size() - div_ind - 1);
 
-    frac.numerator = std::stoi(str_num);
+    numerator = std::stoi(str_num);
+
+    frac.minus = numerator < 0;
+    frac.numerator = std::abs(numerator);
     frac.denominator = std::stoi(str_den);
+
+    frac.simplify();
 
     return stream;
   }
@@ -71,13 +76,19 @@ namespace math {
   void Fraction::simplify()
   {
     int gcd = std::gcd(numerator, denominator);
-    numerator %= gcd;
-    denominator %= gcd;
+    numerator /= gcd;
+    denominator /= gcd;
   }
 
   Fraction & Fraction::operator+=(const Fraction & other)
   {
-    numerator += other.numerator;
+    long int numerator_;
+    numerator_ = get_numerator() * other.denominator + other.get_numerator() * denominator;
+
+    minus = (numerator_ < 0);
+    numerator = std::abs(numerator_);
+    denominator = denominator * other.denominator;
+
     simplify();
 
     return (*this);
@@ -85,7 +96,13 @@ namespace math {
 
   Fraction & Fraction::operator-= (const Fraction & other)
   {
-    numerator -= other.numerator;
+    long int numerator_;
+    numerator_ = get_numerator() * other.denominator - other.get_numerator() * denominator;
+
+    minus = (numerator_ < 0);
+    numerator = std::abs(numerator_);
+    denominator = denominator * other.denominator;
+
     simplify();
 
     return (*this);
@@ -93,6 +110,7 @@ namespace math {
 
   Fraction & Fraction::operator*= (const Fraction & other)
   {
+    minus = ((int)minus + (int)other.minus) % 2;
     numerator *= other.numerator;
     denominator *= other.denominator;
     simplify();
@@ -102,8 +120,9 @@ namespace math {
 
   Fraction & Fraction::operator/= (const Fraction & other)
   {
-    numerator /= other.numerator;
-    denominator /= other.denominator;
+    minus = ((int)minus + (int)other.minus) % 2;
+    numerator *= other.denominator;
+    denominator *= other.numerator;
     simplify();
 
     return (*this);
@@ -116,23 +135,59 @@ namespace math {
 
   bool operator== (const Fraction & lhs, const Fraction & rhs)
   {
-
+    return (lhs.minus == rhs.minus) && \
+    (lhs.numerator == rhs.numerator) && \
+    (lhs.denominator == rhs.denominator);
   }
   bool operator!= (const Fraction & lhs, const Fraction & rhs)
   {
-
+    return !(lhs == rhs);
   }
 
-  bool operator< (const Fraction & lhs, const Fraction & rhs);
-  bool operator> (const Fraction & lhs, const Fraction & rhs);
+  bool operator< (const Fraction & lhs, const Fraction & rhs)
+  {
+    return lhs.get_numerator() * rhs.denominator < rhs.get_numerator() * lhs.denominator;
+  }
+  bool operator> (const Fraction & lhs, const Fraction & rhs)
+  {
+    return lhs.get_numerator() * rhs.denominator > rhs.get_numerator() * lhs.denominator;
+  }
 
-  bool operator<= (const Fraction & lhs, const Fraction & rhs);
-  bool operator>= (const Fraction & lhs, const Fraction & rhs);
+  bool operator<= (const Fraction & lhs, const Fraction & rhs)
+  {
+    return lhs.get_numerator() * rhs.denominator <= rhs.get_numerator() * lhs.denominator;
+  }
+  bool operator>= (const Fraction & lhs, const Fraction & rhs)
+  {
+    return lhs.get_numerator() * rhs.denominator >= rhs.get_numerator() * lhs.denominator;
+  }
 
-  Fraction & Fraction::operator++();
-  Fraction & Fraction::operator--();
+  Fraction & Fraction::operator++()
+  {
+    (*this) += 1;
 
-  Fraction Fraction::operator++(int);
-  Fraction Fraction::operator--(int);
+    return (*this);
+  }
+  Fraction & Fraction::operator--()
+  {
+    (*this) -= 1;
+
+    return (*this);
+  }
+
+  Fraction Fraction::operator++(int)
+  {
+    Fraction temp(*this);
+    ++(*this);
+
+    return temp;
+  }
+  Fraction Fraction::operator--(int)
+  {
+    Fraction temp(*this);
+    --(*this);
+
+    return temp;
+  }
 
 }
