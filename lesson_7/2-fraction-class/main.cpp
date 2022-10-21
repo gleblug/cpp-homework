@@ -13,24 +13,25 @@ int main(int argc, char const *argv[]) {
   std::cout << "b = ";
   std::cin >> b;
 
-  std::cout << "--------------------"
-            << "a + b = " << a + b << '\n'
-            << "a - b = " << a - b << '\n'
-            << "a * b = " << a * b << '\n'
-            << "a / b = " << a / b << '\n'
-            << "--------------------" << '\n'
+  std::cout << "--------------------"                         << '\n'
+            << "a + b = "             << a + b                << '\n'
+            << "a - b = "             << a - b                << '\n'
+            << "a * b = "             << a * b                << '\n'
+            << "a / b = "             << a / b                << '\n'
+            << "--------------------"                         << '\n'
             << "reverse a =         " << a.reverse()          << '\n'
             << "integer part a =    " << a.integer_part()     << '\n'
             << "fractional part a = " << a.fractional_part()  << '\n'
-            << "--------------------" << '\n'
-            << "a == b ? " << std::boolalpha << (a == b) << '\n'
-            << "a > b  ? " << std::boolalpha << (a > b)  << '\n'
-            << "--------------------" << '\n'
-            << "a++ " << a++  << '\n'
-            << "a   " << a    << '\n'
-            << "--a " << --a  << '\n'
-            << "a-- " << a--  << '\n'
-            << "a   " << a    << std::endl;
+            << "--------------------"                         << '\n'
+            << "a == b ? " << std::boolalpha << (a == b)      << '\n'
+            << "a > b  ? " << std::boolalpha << (a > b)       << '\n'
+            << "a < b  ? " << std::boolalpha << (a < b)       << '\n'
+            << "--------------------"                         << '\n'
+            << "a++ "                 << a++                  << '\n'
+            << "a   "                 << a                    << '\n'
+            << "--a "                 << --a                  << '\n'
+            << "a-- "                 << a--                  << '\n'
+            << "a   "                 << a                    << std::endl;
 
   return 0;
 }

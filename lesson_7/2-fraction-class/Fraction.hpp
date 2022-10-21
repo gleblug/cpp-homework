@@ -40,7 +40,7 @@ namespace math {
     int get_numerator () const {
       return minus ? -numerator : numerator;
     }
-    unsigned int get_denominator () const {
+    int get_denominator () const {
       return denominator;
     }
 

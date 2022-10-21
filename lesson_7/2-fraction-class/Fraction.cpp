@@ -86,7 +86,7 @@ namespace math {
       return Fraction(get_denominator(), get_numerator());
     }
 
-    std::cerr << "~~~ Division by zero! ~~~" << '\n';
+    std::cerr << "~~~ Division by zero! ~~~";
     return Fraction(1);
   }
 
@@ -156,20 +156,20 @@ namespace math {
 
   bool operator< (const Fraction & lhs, const Fraction & rhs)
   {
-    return lhs.get_numerator() * rhs.denominator < rhs.get_numerator() * lhs.denominator;
+    return (lhs.get_numerator() * rhs.denominator) < (rhs.get_numerator() * lhs.denominator);
   }
   bool operator> (const Fraction & lhs, const Fraction & rhs)
   {
-    return lhs.get_numerator() * rhs.denominator > rhs.get_numerator() * lhs.denominator;
+    return (lhs.get_numerator() * rhs.denominator) > (rhs.get_numerator() * lhs.denominator);
   }
 
   bool operator<= (const Fraction & lhs, const Fraction & rhs)
   {
-    return lhs.get_numerator() * rhs.denominator <= rhs.get_numerator() * lhs.denominator;
+    return (lhs < rhs) || (lhs == rhs);
   }
   bool operator>= (const Fraction & lhs, const Fraction & rhs)
   {
-    return lhs.get_numerator() * rhs.denominator >= rhs.get_numerator() * lhs.denominator;
+    return (lhs > rhs) || (lhs == rhs);;
   }
 
   Fraction & Fraction::operator++()
