@@ -5,11 +5,6 @@
 
 
 class Array {
-private:
-
-  int *             m_data;
-  size_t            m_length;
-  std::vector<int>  m_vector;
 
 public:
 
@@ -52,6 +47,12 @@ public:
   size_t length () const {
     return m_length;
   };
+
+private:
+
+  int *             m_data;
+  size_t            m_length;
+  std::vector<int>  m_vector;
 };
 
 Array::Array():
