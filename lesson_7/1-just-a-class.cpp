@@ -17,7 +17,7 @@ public:
   Array ();
 
   // users constructors
-  Array (size_t length);
+  explicit Array (size_t length);
 
   Array (std::initializer_list<int> array);
 
@@ -49,10 +49,13 @@ public:
   // concatenation operator
   friend Array operator+ (const Array & lhs, const Array & rhs);
 
-  size_t length () const;
+  size_t length () const {
+    return m_length;
+  };
 };
 
 Array::Array():
+  m_data(nullptr),
   m_length(0)
 {
 
@@ -61,50 +64,49 @@ Array::Array():
 Array::Array(size_t length):
   m_data(new int [length]),
   m_length(length),
-  m_vector(std::vector<int>(length))
+  m_vector(length)
 {
 
 }
 
-Array::Array(std::initializer_list<int> array)
+Array::Array(std::initializer_list<int> array):
+  m_data(new int [array.size()]),
+  m_length(std::size(array)),
+  m_vector(array)
 {
-  m_length = std::distance(std::begin(array), std::end(array));
-  m_vector = array;
-  m_data = new int [m_length];
   for (size_t i = 0; i < m_length; i++)
   {
     m_data[i] = m_vector[i];
   }
 }
 
-Array::Array(const std::vector<int> & array)
+Array::Array(const std::vector<int> & array):
+  m_data(new int [array.size()]),
+  m_length(array.size()),
+  m_vector(array)
 {
-  m_length = array.size();
-  m_vector = array;
-  m_data = new int [m_length];
   for (size_t i = 0; i < m_length; i++)
   {
     m_data[i] = m_vector[i];
   }
 }
 
-Array::Array(const Array & other)
+Array::Array(const Array & other):
+  m_data(new int [other.m_length]),
+  m_length(other.m_length),
+  m_vector(other.m_vector)
 {
-  m_length = other.m_length;
-  m_vector = other.m_vector;
-  m_data = new int [m_length];
   for (size_t i = 0; i < m_length; i++)
   {
     m_data[i] = m_vector[i];
   }
 }
 
-Array::Array(Array && other)
+Array::Array(Array && other):
+  m_data(other.m_data),
+  m_length(other.m_length),
+  m_vector(std::move(other.m_vector))
 {
-  m_data = other.m_data;
-  m_length = other.m_length;
-  m_vector = std::move(other.m_vector);
-
   other.m_data = nullptr;
   other.m_length = 0;
 }
@@ -164,12 +166,16 @@ int & Array::operator[] (size_t index)
 
 Array & Array::operator= (const Array & other)
 {
-  m_length = other.m_length;
-  m_vector = other.m_vector;
-  m_data = new int [m_length];
-  for (size_t i = 0; i < m_length; i++)
-  {
-    m_data[i] = m_vector[i];
+  if (&other != this) {
+    delete [] m_data;
+
+    m_length = other.m_length;
+    m_vector = other.m_vector;
+    m_data = new int [m_length];
+    for (size_t i = 0; i < m_length; i++)
+    {
+      m_data[i] = m_vector[i];
+    }
   }
 
   return (*this);
@@ -177,12 +183,16 @@ Array & Array::operator= (const Array & other)
 
 Array & Array::operator= (Array && other)
 {
-  m_data = other.m_data;
-  m_length = other.m_length;
-  m_vector = std::move(other.m_vector);
+  if (&other != this) {
+    delete [] m_data;
 
-  other.m_data = nullptr;
-  other.m_length = 0;
+    m_data = other.m_data;
+    m_length = other.m_length;
+    m_vector = std::move(other.m_vector);
+
+    other.m_data = nullptr;
+    other.m_length = 0;
+  }
 
   return (*this);
 }
@@ -204,11 +214,6 @@ Array operator+(const Array & lhs, const Array & rhs)
 
   return array;
 }
-
-size_t Array::length() const {
-  return m_length;
-}
-
 
 int main(int argc, char const *argv[]) {
   Array a = {1, 2, 3, 4};
