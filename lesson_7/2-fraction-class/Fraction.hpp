@@ -87,22 +87,10 @@ namespace math {
     Fraction operator++(int);
     Fraction operator--(int);
   };
-}
 
-enum class Exceptions {
-  division_by_zero
-};
+  enum class Exceptions {
+    division_by_zero
+  };
 
-void error(Exceptions exception) {
-  std::string error_message;
-  switch (exception) {
-    case Exceptions::division_by_zero:
-      error_message = "Division by zero!";
-      break;
-    default:
-      error_message = "Unknown exception.";
-  }
-
-  std::cerr << "\x1B[31m" << "ERROR: " << error_message << "\033[0m\n";
-  exit(EXIT_FAILURE);
+  void error(Exceptions exception);
 }
