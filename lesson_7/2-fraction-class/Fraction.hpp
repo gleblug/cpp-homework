@@ -104,5 +104,5 @@ void error(Exceptions exception) {
   }
 
   std::cerr << "\x1B[31m" << "ERROR: " << error_message << "\033[0m\n";
-  exit(static_cast<int>(exception));
+  exit(EXIT_FAILURE);
 }
