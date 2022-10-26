@@ -20,7 +20,7 @@ namespace math {
   private:
 
     int  numerator;
-    unsigned int  denominator;
+    int  denominator;
 
   public:
 
