@@ -76,11 +76,6 @@ namespace math {
     denominator /= gcd;
   }
 
-  Fraction Fraction::reverse () const
-  {
-    return Fraction(denominator, numerator);
-  }
-
   Fraction & Fraction::operator+=(const Fraction & other)
   {
     numerator = numerator * other.denominator + other.numerator * denominator;
@@ -141,16 +136,16 @@ namespace math {
   }
   bool operator> (const Fraction & lhs, const Fraction & rhs)
   {
-    return (lhs.numerator * rhs.denominator) > (rhs.numerator * lhs.denominator);
+    return !((lhs < rhs) || (lhs == rhs));
   }
 
   bool operator<= (const Fraction & lhs, const Fraction & rhs)
   {
-    return (lhs < rhs) || (lhs == rhs);
+    return !(lhs > rhs);
   }
   bool operator>= (const Fraction & lhs, const Fraction & rhs)
   {
-    return (lhs > rhs) || (lhs == rhs);;
+    return !(lhs < rhs);
   }
 
   Fraction & Fraction::operator++()

@@ -46,7 +46,9 @@ namespace math {
 
     void simplify ();
 
-    Fraction reverse () const;
+    Fraction reverse () const {
+      return Fraction(denominator, numerator);
+    };
 
     int integer_part () const {
       return numerator / denominator;
