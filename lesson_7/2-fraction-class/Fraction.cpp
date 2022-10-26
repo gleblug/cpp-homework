@@ -6,25 +6,22 @@
 
 namespace math {
 
+  Fraction::Fraction():
+    numerator(1),
+    denominator(1) {  }
+
   Fraction::Fraction(int number):
-    numerator(std::abs(number)),
-    denominator(1)
-  {
-    minus = (number < 0);
-  }
+    numerator(number),
+    denominator(1) {  }
 
   Fraction::Fraction(double number)
   {
-    minus = (number < 0);
-    number = std::abs(number);
-
     int dec = 1;
 
-    while (number - (int)number > 0) {
+    while (std::abs(number - static_cast<int>(number)) > 0) {
       dec *= 10;
       number *= 10;
     }
-
     numerator = number;
     denominator = dec;
 
@@ -33,8 +30,10 @@ namespace math {
 
   Fraction::Fraction(int num, int den)
   {
-    minus = (num * den < 0);
-    numerator = std::abs(num);
+    if (!den) {
+      error("Division by zero!");
+    }
+    numerator = (num * den < 0) ? -std::abs(num) : std::abs(num);
     denominator = std::abs(den);
 
     simplify();
@@ -42,15 +41,13 @@ namespace math {
 
   std::ostream & operator<< (std::ostream & stream, const Fraction & frac)
   {
-    stream << frac.get_numerator() << '/' << frac.denominator;
+    stream << frac.numerator << '/' << frac.denominator;
 
     return stream;
   }
 
   std::istream & operator>> (std::istream & stream, Fraction & frac)
   {
-    long int numerator;
-
     std::string str_num;
     std::string str_den;
     std::string line;
@@ -62,10 +59,7 @@ namespace math {
     str_num = line.substr(0, div_ind);
     str_den = line.substr(div_ind + 1, line.size() - div_ind - 1);
 
-    numerator = std::stoi(str_num);
-
-    frac.minus = numerator < 0;
-    frac.numerator = std::abs(numerator);
+    frac.numerator = std::stoi(str_num);
     frac.denominator = std::stoi(str_den);
 
     frac.simplify();
@@ -82,21 +76,12 @@ namespace math {
 
   Fraction Fraction::reverse () const
   {
-    if (numerator) {
-      return Fraction(get_denominator(), get_numerator());
-    }
-
-    std::cerr << "~~~ Division by zero! ~~~";
-    return Fraction(1);
+    return Fraction(denominator, numerator);
   }
 
   Fraction & Fraction::operator+=(const Fraction & other)
   {
-    long int numerator_;
-    numerator_ = get_numerator() * other.denominator + other.get_numerator() * denominator;
-
-    minus = (numerator_ < 0);
-    numerator = std::abs(numerator_);
+    numerator = numerator * other.denominator + other.numerator * denominator;
     denominator = denominator * other.denominator;
 
     simplify();
@@ -106,11 +91,7 @@ namespace math {
 
   Fraction & Fraction::operator-= (const Fraction & other)
   {
-    long int numerator_;
-    numerator_ = get_numerator() * other.denominator - other.get_numerator() * denominator;
-
-    minus = (numerator_ < 0);
-    numerator = std::abs(numerator_);
+    numerator = numerator * other.denominator - other.numerator * denominator;
     denominator = denominator * other.denominator;
 
     simplify();
@@ -120,7 +101,6 @@ namespace math {
 
   Fraction & Fraction::operator*= (const Fraction & other)
   {
-    minus = ((int)minus + (int)other.minus) % 2;
     numerator *= other.numerator;
     denominator *= other.denominator;
 
@@ -131,10 +111,9 @@ namespace math {
 
   Fraction & Fraction::operator/= (const Fraction & other)
   {
-    minus = ((int)minus + (int)other.minus) % 2;
     numerator *= other.denominator;
     denominator *= other.numerator;
-    
+
     simplify();
 
     return (*this);
@@ -147,9 +126,7 @@ namespace math {
 
   bool operator== (const Fraction & lhs, const Fraction & rhs)
   {
-    return (lhs.minus == rhs.minus) && \
-    (lhs.numerator == rhs.numerator) && \
-    (lhs.denominator == rhs.denominator);
+    return (lhs.numerator == rhs.numerator) && (lhs.denominator == rhs.denominator);
   }
   bool operator!= (const Fraction & lhs, const Fraction & rhs)
   {
@@ -158,11 +135,11 @@ namespace math {
 
   bool operator< (const Fraction & lhs, const Fraction & rhs)
   {
-    return (lhs.get_numerator() * rhs.get_denominator()) < (rhs.get_numerator() * lhs.get_denominator());
+    return (lhs.numerator * rhs.denominator) < (rhs.numerator * lhs.denominator);
   }
   bool operator> (const Fraction & lhs, const Fraction & rhs)
   {
-    return (lhs.get_numerator() * rhs.get_denominator()) > (rhs.get_numerator() * lhs.get_denominator());
+    return (lhs.numerator * rhs.denominator) > (rhs.numerator * lhs.denominator);
   }
 
   bool operator<= (const Fraction & lhs, const Fraction & rhs)

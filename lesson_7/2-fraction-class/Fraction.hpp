@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <string>
 
 /*!
  * \namespace math
@@ -18,13 +19,12 @@ namespace math {
   class Fraction {
   private:
 
-    unsigned int  numerator;
+    int  numerator;
     unsigned int  denominator;
-    bool          minus;
 
   public:
 
-    Fraction () = default;
+    Fraction ();
 
     Fraction (int number);
 
@@ -37,27 +37,27 @@ namespace math {
     friend std::ostream & operator<< (std::ostream & stream, const Fraction & frac);
     friend std::istream & operator>> (std::istream & stream, Fraction & frac);
 
-    int get_numerator () const {
-      return minus ? -numerator : numerator;
-    }
-    int get_denominator () const {
-      return denominator;
-    }
+    // int get_numerator () const {
+    //   return numerator;
+    // }
+    // unsigned int get_denominator () const {
+    //   return denominator;
+    // }
 
     void simplify ();
 
     Fraction reverse () const;
 
     int integer_part () const {
-      return (int)(get_numerator() / get_denominator());
+      return numerator / denominator;
     };
 
     Fraction fractional_part() const {
-      return Fraction(get_numerator() - integer_part() * get_denominator(), get_denominator());
+      return Fraction(numerator - integer_part() * denominator, denominator);
     };
 
     operator double () const {
-      return get_numerator() / get_denominator();
+      return static_cast<double>(numerator) / denominator;
     };
 
     Fraction & operator+= (const Fraction & other);
@@ -85,4 +85,9 @@ namespace math {
     Fraction operator++(int);
     Fraction operator--(int);
   };
+}
+
+void error(std::string error_message) {
+  std::cerr << "\x1B[31m" << "ERROR: " << error_message << "\033[0m\n";
+  exit(0);
 }
