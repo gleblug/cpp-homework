@@ -14,6 +14,8 @@ ConsoleScreen::ConsoleScreen(double size_):
 }
 
 void ConsoleScreen::add_line(Vec2d point1, Vec2d point2) {
+  point1 = point1 / size;
+  point2 = point2 / size;
   double A = point2.y - point1.y;
   double B = point1.x - point2.x;
   double C = point1.x * (point1.y - point2.y) + point1.y * (point2.x - point1.x);
@@ -26,8 +28,6 @@ void ConsoleScreen::add_line(Vec2d point1, Vec2d point2) {
       uv.y = -uv.y;
       uv.x *= aspect * pixel_aspect;
 
-      point1 = point1 / size;
-      point2 = point2 / size;
 
       char pixel = 'W';
       double distance = std::abs(A * uv.x + B * uv.y + C) / sqrt(A * A + B * B);
