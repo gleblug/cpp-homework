@@ -56,7 +56,7 @@ namespace math {
       return Fraction(numerator - integer_part() * denominator, denominator);
     };
 
-    operator double () const {
+    explicit operator double () const {
       return static_cast<double>(numerator) / denominator;
     };
 
@@ -87,7 +87,20 @@ namespace math {
   };
 }
 
-void error(std::string error_message) {
+enum class Exceptions {
+  division_by_zero
+};
+
+void error(Exceptions exception) {
+  std::string error_message;
+  switch (exception) {
+    case Exceptions::division_by_zero:
+      error_message = "Division by zero!";
+      break;
+    default:
+      error_message = "Unknown exception.";
+  }
+
   std::cerr << "\x1B[31m" << "ERROR: " << error_message << "\033[0m\n";
-  exit(0);
+  exit(static_cast<int>(exception));
 }

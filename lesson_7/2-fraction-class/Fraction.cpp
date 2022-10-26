@@ -14,7 +14,7 @@ namespace math {
     numerator(number),
     denominator(1) {  }
 
-  Fraction::Fraction(double number)
+  Fraction::Fraction(double number):
   {
     int dec = 1;
 
@@ -31,7 +31,7 @@ namespace math {
   Fraction::Fraction(int num, int den)
   {
     if (!den) {
-      error("Division by zero!");
+      error(Exceptions::division_by_zero);
     }
     numerator = (num * den < 0) ? -std::abs(num) : std::abs(num);
     denominator = std::abs(den);
@@ -61,6 +61,8 @@ namespace math {
 
     frac.numerator = std::stoi(str_num);
     frac.denominator = std::stoi(str_den);
+
+    if (!frac.denominator) error(Exceptions::division_by_zero);
 
     frac.simplify();
 
