@@ -17,4 +17,6 @@ int main(int argc, char const *argv[]) {
     std::cout << "P = " << figure->get_perimeter() << '\n'
       << "S = " << figure->get_area() << '\n' << std::endl;
   }
+
+  for (auto figure: figures) delete figure;
 }
