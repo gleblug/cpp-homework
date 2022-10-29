@@ -45,12 +45,23 @@ public:
   }
 
 protected:
-  std::vector<std::pair<double, double>> points;
+  std::vector<std::pair<double, double>>  points;
+  std::vector<double>                     sides;
+
+private:
+  virtual void calculate_sides() {
+    for (size_t i = 0; i < points.size() - 1; i++) {
+      sides.push_back(distance(points[i], points[i + 1]));
+    }
+    sides.push_back(distance(points[0], points[points.size() - 1]));
+  };
 };
 
 // Figure -> Polygon -> Triangle class
 class Triangle: public Polygon {
 public:
+  Triangle() = delete;
+
   Triangle (const std::vector<std::pair<double, double>> points);
 
   virtual ~Triangle ();
@@ -65,6 +76,8 @@ public:
 // Figure -> Polygon -> Quadrangle class
 class Quadrangle: public Polygon {
 public:
+  Quadrangle () = delete;
+
   Quadrangle (const std::vector<std::pair<double, double>> points);
 
   virtual ~Quadrangle ();
@@ -77,6 +90,8 @@ public:
 // Figure -> Polygon -> Quadrangle -> Parallelogram class
 class Parallelogram: public Quadrangle {
 public:
+  Parallelogram () = delete;
+
   Parallelogram (const std::vector<std::pair<double, double>> points);
 
   virtual ~Parallelogram ();
@@ -89,9 +104,23 @@ public:
 // Figure -> Polygon -> Quadrangle -> Parallelogram -> Rhombus class
 class Rhombus: public virtual Parallelogram {
 public:
+  Rhombus () = delete;
+
   Rhombus (const std::vector<std::pair<double, double>> points);
 
   virtual ~Rhombus ();
+
+  double get_perimeter() const override {
+    double a = distance(points[0], points[1]);
+    return 4 * a;
+  }
+
+  double get_area() const override {
+    double d1 = distance(points[0], points[2]);
+    double d2 = distance(points[1], points[3]);
+
+    return 0.5 * d1 * d2;
+  }
 
   virtual void print_info() const override {
     std::cout << "Rhombus." << std::endl;
@@ -101,9 +130,16 @@ public:
 // Figure -> Polygon -> Quadrangle -> Parallelogram -> Rectangle class
 class Rectangle: public virtual Parallelogram {
 public:
+  Rectangle () = delete;
+
   Rectangle (const std::vector<std::pair<double, double>> points);
 
   virtual ~Rectangle ();
+
+  double get_area() const override {
+    a = distance(points[0], points[1]);
+    b = distance(points[1], points[2]);
+  }
 
   virtual void print_info() const override {
     std::cout << "Rectangle." << std::endl;
