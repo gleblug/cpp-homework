@@ -1,5 +1,4 @@
 #include "Figure2d.hpp"
-#include "Figure3d.hpp"
 #include <vector>
 
 int main(int argc, char const *argv[]) {
