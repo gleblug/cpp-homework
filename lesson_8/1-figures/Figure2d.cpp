@@ -29,8 +29,6 @@ double distance(std::pair<double, double> pt1, std::pair<double, double> pt2) {
 
 Polygon::Polygon(const std::vector<std::pair<double, double>> points_):
   points(points_) {
-  if (points.size() < 5) error(Exceptions::invalid_number_of_points);
-
   calculate_sides();
 };
 
@@ -58,22 +56,14 @@ Triangle::Triangle (const std::vector<std::pair<double, double>> points):
   Polygon(points) {
   if (points.size() != 3) error(Exceptions::invalid_number_of_points);
 
-  std::pair<double, double> A = points[0];
-  std::pair<double, double> B = points[1];
-  std::pair<double, double> C = points[2];
+  std::pair<double, double> u{points[1].first - points[0].first, points[1].second - points[0].second};
+  std::pair<double, double> v{points[1].first - points[2].first, points[1].second - points[2].second};
 
-  if ((C.first - B.first) / (C.second - B.second) == (C.first - A.first) / (C.second - A.second))
+  if ((u.second == 0 && v.second == 0) ||
+    ((u.second != 0 && v.second != 0) &&
+    (u.first * v.second == v.first * u.second)
+  ))
     error(Exceptions::invalid_figure);
-}
-
-double Triangle::get_area() const {
-  double p = get_perimeter() / 2;
-
-  double a = sides[0];
-  double b = sides[1];
-  double c = sides[2];
-
-  return std::sqrt(p * (p-a) * (p-b) * (p-c));
 }
 
 
@@ -85,21 +75,31 @@ Quadrangle::Quadrangle (const std::vector<std::pair<double, double>> points):
 
 Parallelogram::Parallelogram (const std::vector<std::pair<double, double>> points):
   Quadrangle(points) {
-  double a = distance(points[0], points[1]);
-  double b = distance(points[1], points[2]);
-  double c = distance(points[2], points[3]);
-  double d = distance(points[3], points[0]);
-
-  if ((a != c) || (b != d)) error(Exceptions::invalid_figure);
+  if ((sides[0] != sides[2]) || (sides[1] != sides[3])) error(Exceptions::invalid_figure);
 }
 
 
 Rhombus::Rhombus (const std::vector<std::pair<double, double>> points):
   Parallelogram(points) {
-  double a = distance(points[0], points[1]);
-  double b = distance(points[1], points[2]);
-  double c = distance(points[2], points[3]);
-  double d = distance(points[3], points[0]);
-
-  if ((a != b) || (c != d)) error(Exceptions::invalid_figure);
+  if ((sides[0] != sides[1]) || (sides[2] != sides[3])) error(Exceptions::invalid_figure);
 }
+
+
+Rectangle::Rectangle (const std::vector<std::pair<double, double>> points):
+  Parallelogram(points) {
+    std::pair<double, double> v(
+      points[1].first - points[2].first,
+      points[1].second - points[2].second
+    );
+  std::pair<double, double> u(
+    points[1].first - points[0].first,
+    points[1].second - points[0].second
+  );
+
+  if (u.first * v.first + u.second * v.second != 0)
+    error(Exceptions::invalid_figure);
+}
+
+
+Square::Square(const std::vector<std::pair<double, double>> points):
+  Parallelogram(points), Rectangle(points), Rhombus(points) {  }

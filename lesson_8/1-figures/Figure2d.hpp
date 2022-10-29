@@ -4,7 +4,7 @@
 #include<iostream>
 #include <cmath>
 
-extern double const pi = 3.1415926535;
+inline double const pi = 3.1415926535;
 
 double distance(std::pair<double, double> pt1, std::pair<double, double> pt2);
 
@@ -13,17 +13,11 @@ class Figure2d {
 public:
   virtual ~Figure2d() = default;
 
-  virtual double get_perimeter() const;
+  virtual double get_perimeter() const = 0;
 
-  virtual double get_area() const;
+  virtual double get_area() const = 0;
 
-  virtual void print_info() const;
-
-  // virtual std::pair<double, double> get_barycenter() const;
-  //
-  // virtual void extent(const double scale);
-  //
-  // virtual void rotate(const double degree);
+  virtual void print_info() const = 0;
 
 };
 
@@ -34,7 +28,7 @@ public:
 
   Polygon(const std::vector<std::pair<double, double>> points_);
 
-  virtual ~Polygon ();
+  virtual ~Polygon () = default;
 
   double get_perimeter() const override;
 
@@ -64,9 +58,13 @@ public:
 
   Triangle (const std::vector<std::pair<double, double>> points);
 
-  virtual ~Triangle ();
+  virtual ~Triangle () = default;
 
-  double get_area() const override;
+  double get_area() const override {
+    double p = get_perimeter() / 2.0;
+
+    return std::sqrt(p * (p-sides[0]) * (p-sides[1]) * (p-sides[2]));
+  };
 
   void print_info() const override {
     std::cout << "Triangle." << std::endl;
@@ -80,7 +78,7 @@ public:
 
   Quadrangle (const std::vector<std::pair<double, double>> points);
 
-  virtual ~Quadrangle ();
+  virtual ~Quadrangle () = default;
 
   virtual void print_info() const override {
     std::cout << "Quadrangle." << std::endl;
@@ -94,7 +92,7 @@ public:
 
   Parallelogram (const std::vector<std::pair<double, double>> points);
 
-  virtual ~Parallelogram ();
+  virtual ~Parallelogram () = default;
 
   virtual void print_info() const override {
     std::cout << "Parallelogram." << std::endl;
@@ -108,11 +106,10 @@ public:
 
   Rhombus (const std::vector<std::pair<double, double>> points);
 
-  virtual ~Rhombus ();
+  virtual ~Rhombus () = default;
 
   double get_perimeter() const override {
-    double a = distance(points[0], points[1]);
-    return 4 * a;
+    return 4 * sides[0];
   }
 
   double get_area() const override {
@@ -134,11 +131,10 @@ public:
 
   Rectangle (const std::vector<std::pair<double, double>> points);
 
-  virtual ~Rectangle ();
+  virtual ~Rectangle () = default;
 
   double get_area() const override {
-    a = distance(points[0], points[1]);
-    b = distance(points[1], points[2]);
+    return sides[0] * sides[1];
   }
 
   virtual void print_info() const override {
@@ -151,7 +147,15 @@ class Square: public Rectangle, public Rhombus {
 public:
   Square (const std::vector<std::pair<double, double>> points);
 
-  virtual ~Square ();
+  virtual ~Square() = default;
+
+  double get_perimeter() const override final {
+    return Rhombus::get_perimeter();
+  };
+
+  double get_area() const override final {
+    return Rectangle::get_perimeter();
+  };
 
   virtual void print_info() const override {
     std::cout << "Square." << std::endl;
@@ -166,7 +170,7 @@ public:
   Ellipse (std::pair<double, double> center_, double a_, double b_):
     center(center_), a(a_), b(b_) {  }
 
-  virtual ~Ellipse ();
+  virtual ~Ellipse () = default;
 
   virtual double get_perimeter() const override final {
     return 4 * (pi * a * b + (a - b) * (a - b)) / (a + b);
@@ -195,7 +199,7 @@ public:
   Circle (std::pair<double, double> center, double radius):
     Ellipse(center, radius, radius) {  };
 
-  virtual ~Circle ();
+  virtual ~Circle () = default;
 
   virtual void print_info() const override {
     std::cout << "Circle. Radius: r=" << a << std::endl;
