@@ -2,8 +2,11 @@
 #include<vector>
 #include<string>
 #include<iostream>
+#include <cmath>
 
 extern double const pi = 3.1415926535;
+
+double distance(std::pair<double, double> pt1, std::pair<double, double> pt2);
 
 // Base figure class
 class Figure2d {
@@ -27,21 +30,22 @@ public:
 // Figure -> Polygon class
 class Polygon: public Figure2d {
 public:
-  Polygon(const std::vector<std::pair<double, double>> points):
-    m_points(points) {  };
+  Polygon() = delete;
+
+  Polygon(const std::vector<std::pair<double, double>> points_);
 
   virtual ~Polygon ();
 
-  virtual double get_perimeter() const override final;
+  double get_perimeter() const override;
 
-  virtual double get_area() const override final;
+  double get_area() const override;
 
-  virtual void print_info() const override {
+  void print_info() const override {
     std::cout << "Polygon." << std::endl;
   }
 
 protected:
-  std::vector<std::pair<double, double>> m_points;
+  std::vector<std::pair<double, double>> points;
 };
 
 // Figure -> Polygon -> Triangle class
@@ -51,7 +55,9 @@ public:
 
   virtual ~Triangle ();
 
-  virtual void print_info() const override {
+  double get_area() const override;
+
+  void print_info() const override {
     std::cout << "Triangle." << std::endl;
   }
 };
