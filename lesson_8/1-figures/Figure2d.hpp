@@ -3,26 +3,12 @@
 #include<string>
 #include<iostream>
 
-
-enum class Exceptions {
-  invalid_number_of_points
-};
-
-void error(Exceptions exception) {
-  std::string error_message = "Unknown error.";
-  switch (exception) {
-    case Exceptions::invalid_number_of_points:
-      error_message = "Invalid number of points!";
-      break;
-  }
-  std::cerr << "ERROR: " << error_message << std::endl;
-  exit(EXIT_FAILURE);
-}
+extern double const pi = 3.1415926535;
 
 // Base figure class
 class Figure2d {
 public:
-  Figure2d() = default;
+  virtual ~Figure2d() = default;
 
   virtual double get_perimeter() const;
 
@@ -30,13 +16,12 @@ public:
 
   virtual void print_info() const;
 
-  virtual std::pair<double, double> get_barycenter() const;
+  // virtual std::pair<double, double> get_barycenter() const;
+  //
+  // virtual void extent(const double scale);
+  //
+  // virtual void rotate(const double degree);
 
-  virtual void extent(const double scale);
-
-  virtual void rotate(const double degree);
-
-  virtual ~Figure2d() = default;
 };
 
 // Figure -> Polygon class
@@ -45,91 +30,132 @@ public:
   Polygon(const std::vector<std::pair<double, double>> points):
     m_points(points) {  };
 
-  double get_perimeter() const override;
+  virtual ~Polygon ();
 
-  double get_area() const override;
+  virtual double get_perimeter() const override final;
 
-  void print_info() const override;
+  virtual double get_area() const override final;
 
-  std::pair<double, double> get_barycenter() const override;
+  virtual void print_info() const override {
+    std::cout << "Polygon." << std::endl;
+  }
 
-  void extent(const double scale) override;
-
-  void rotate(const double degree) override;
-
-private:
+protected:
   std::vector<std::pair<double, double>> m_points;
 };
 
 // Figure -> Polygon -> Triangle class
 class Triangle: public Polygon {
 public:
-  Triangle (const std::vector<std::pair<double, double>> points):
-    Polygon(points) {
-    if (points.size() != 3) error(Exceptions::invalid_number_of_points);
-  }
+  Triangle (const std::vector<std::pair<double, double>> points);
+
   virtual ~Triangle ();
+
+  virtual void print_info() const override {
+    std::cout << "Triangle." << std::endl;
+  }
 };
 
 // Figure -> Polygon -> Quadrangle class
 class Quadrangle: public Polygon {
-private:
-
 public:
-  Quadrangle ();
+  Quadrangle (const std::vector<std::pair<double, double>> points);
+
   virtual ~Quadrangle ();
+
+  virtual void print_info() const override {
+    std::cout << "Quadrangle." << std::endl;
+  }
 };
 
 // Figure -> Polygon -> Quadrangle -> Parallelogram class
 class Parallelogram: public Quadrangle {
-private:
-
 public:
-  Parallelogram ();
+  Parallelogram (const std::vector<std::pair<double, double>> points);
+
   virtual ~Parallelogram ();
+
+  virtual void print_info() const override {
+    std::cout << "Parallelogram." << std::endl;
+  }
 };
 
 // Figure -> Polygon -> Quadrangle -> Parallelogram -> Rhombus class
-class Rhombus: public Parallelogram {
-private:
-
+class Rhombus: public virtual Parallelogram {
 public:
-  Rhombus ();
+  Rhombus (const std::vector<std::pair<double, double>> points);
+
   virtual ~Rhombus ();
+
+  virtual void print_info() const override {
+    std::cout << "Rhombus." << std::endl;
+  }
 };
 
 // Figure -> Polygon -> Quadrangle -> Parallelogram -> Rectangle class
-class Rectangle: public Parallelogram {
-private:
-
+class Rectangle: public virtual Parallelogram {
 public:
-  Rectangle ();
+  Rectangle (const std::vector<std::pair<double, double>> points);
+
   virtual ~Rectangle ();
+
+  virtual void print_info() const override {
+    std::cout << "Rectangle." << std::endl;
+  }
 };
 
 // Figure -> Polygon -> Quadrangle -> Parallelogram -> Rectangle & Rhombus -> Square class
 class Square: public Rectangle, public Rhombus {
-private:
-
 public:
-  Square ();
+  Square (const std::vector<std::pair<double, double>> points);
+
   virtual ~Square ();
+
+  virtual void print_info() const override {
+    std::cout << "Square." << std::endl;
+  }
 };
 
 // Figure -> Ellipse class
 class Ellipse: public Figure2d {
-private:
-
 public:
-  Ellipse ();
+  Ellipse () = delete;
+
+  Ellipse (std::pair<double, double> center_, double a_, double b_):
+    center(center_), a(a_), b(b_) {  }
+
   virtual ~Ellipse ();
+
+  virtual double get_perimeter() const override final {
+    return 4 * (pi * a * b + (a - b) * (a - b)) / (a + b);
+  }
+
+  virtual double get_area() const override final {
+    return pi * a * b;
+  };
+
+  virtual void print_info() const override {
+    std::cout << "Ellipse. Сoefficients of canonical equation: a=" << a << " b=" << b << std::endl;
+  }
+
+protected:
+  std::pair<double, double> center;
+  double a;
+private:
+  double b;
 };
 
 // Figure -> Ellipse -> Circle class
 class Circle: public Ellipse {
-private:
-
 public:
-  Circle ();
+  Circle() = delete;
+
+  Circle (std::pair<double, double> center, double radius):
+    Ellipse(center, radius, radius) {  };
+
   virtual ~Circle ();
+
+  virtual void print_info() const override {
+    std::cout << "Circle. Radius: r=" << a << std::endl;
+  }
 };
