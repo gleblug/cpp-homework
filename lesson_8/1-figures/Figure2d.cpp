@@ -23,11 +23,16 @@ void error(Exceptions exception) {
   exit(EXIT_FAILURE);
 }
 
-double distance(std::pair<double, double> pt1, std::pair<double, double> pt2) {
+double distance(vec2d pt1, vec2d pt2) {
   return std::sqrt((pt2.first - pt1.first) * (pt2.first - pt1.first) + (pt2.second - pt1.second) * (pt2.second - pt1.second));
+};
+
+std::ostream& operator<<(std::ostream& stream, Figure2d const * figure) {
+  stream << figure->get_info();
+  return stream;
 }
 
-Polygon::Polygon(const std::vector<std::pair<double, double>> points_):
+Polygon::Polygon(const std::vector<vec2d> points_):
   points(points_) {
   calculate_sides();
 };
@@ -43,7 +48,7 @@ double Polygon::get_perimeter() const {
 
 double Polygon::get_area() const {
   double area = 0;
-  for (size_t i = 1; i < points.size() - 1; i++) {
+  for (size_t i = 1; i < std::size(points) - 1; i++) {
     Triangle piece({points[0], points[i], points[i + 1]});
     area += piece.get_area();
   }
@@ -52,12 +57,12 @@ double Polygon::get_area() const {
 }
 
 
-Triangle::Triangle (const std::vector<std::pair<double, double>> points):
+Triangle::Triangle (const std::vector<vec2d> points):
   Polygon(points) {
-  if (points.size() != 3) error(Exceptions::invalid_number_of_points);
+  if (std::size(points) != 3) error(Exceptions::invalid_number_of_points);
 
-  std::pair<double, double> u{points[1].first - points[0].first, points[1].second - points[0].second};
-  std::pair<double, double> v{points[1].first - points[2].first, points[1].second - points[2].second};
+  vec2d u{points[1].first - points[0].first, points[1].second - points[0].second};
+  vec2d v{points[1].first - points[2].first, points[1].second - points[2].second};
 
   if ((u.second == 0 && v.second == 0) ||
     ((u.second != 0 && v.second != 0) &&
@@ -67,31 +72,31 @@ Triangle::Triangle (const std::vector<std::pair<double, double>> points):
 }
 
 
-Quadrangle::Quadrangle (const std::vector<std::pair<double, double>> points):
+Quadrangle::Quadrangle (const std::vector<vec2d> points):
   Polygon(points) {
-  if (points.size() != 4) error(Exceptions::invalid_number_of_points);
+  if (std::size(points) != 4) error(Exceptions::invalid_number_of_points);
 }
 
 
-Parallelogram::Parallelogram (const std::vector<std::pair<double, double>> points):
+Parallelogram::Parallelogram (const std::vector<vec2d> points):
   Quadrangle(points) {
   if ((sides[0] != sides[2]) || (sides[1] != sides[3])) error(Exceptions::invalid_figure);
 }
 
 
-Rhombus::Rhombus (const std::vector<std::pair<double, double>> points):
+Rhombus::Rhombus (const std::vector<vec2d> points):
   Parallelogram(points) {
   if ((sides[0] != sides[1]) || (sides[2] != sides[3])) error(Exceptions::invalid_figure);
 }
 
 
-Rectangle::Rectangle (const std::vector<std::pair<double, double>> points):
+Rectangle::Rectangle (const std::vector<vec2d> points):
   Parallelogram(points) {
-    std::pair<double, double> v(
+    vec2d v(
       points[1].first - points[2].first,
       points[1].second - points[2].second
     );
-  std::pair<double, double> u(
+  vec2d u(
     points[1].first - points[0].first,
     points[1].second - points[0].second
   );
@@ -101,5 +106,5 @@ Rectangle::Rectangle (const std::vector<std::pair<double, double>> points):
 }
 
 
-Square::Square(const std::vector<std::pair<double, double>> points):
+Square::Square(const std::vector<vec2d> points):
   Parallelogram(points), Rectangle(points), Rhombus(points) {  }

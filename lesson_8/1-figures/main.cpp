@@ -13,8 +13,8 @@ int main(int argc, char const *argv[]) {
   };
 
   for (auto figure: figures) {
-    figure->print_info();
-    std::cout << "P = " << figure->get_perimeter() << '\n'
+    std::cout << figure << '\n'
+      << "P = " << figure->get_perimeter() << '\n'
       << "S = " << figure->get_area() << '\n' << std::endl;
   }
 

@@ -4,9 +4,11 @@
 #include<iostream>
 #include <cmath>
 
-inline double const pi = 3.1415926535;
+using vec2d = std::pair<double, double>;
 
-double distance(std::pair<double, double> pt1, std::pair<double, double> pt2);
+inline double constexpr pi = 3.1415926535;
+
+double distance(vec2d pt1, vec2d pt2);
 
 // Base figure class
 class Figure2d {
@@ -17,16 +19,18 @@ public:
 
   virtual double get_area() const = 0;
 
-  virtual void print_info() const = 0;
+  virtual std::string get_info() const = 0;
 
+  friend std::ostream &operator<<(std::ostream &stream, Figure2d const *figure);
 };
 
-// Figure -> Polygon class
-class Polygon: public Figure2d {
-public:
-  Polygon() = delete;
+std::ostream &operator<<(std::ostream &stream, Figure2d const *figure);
 
-  Polygon(const std::vector<std::pair<double, double>> points_);
+// Figure -> Polygon class
+class Polygon : public Figure2d
+{
+public:
+  explicit Polygon(const std::vector<vec2d> points_);
 
   virtual ~Polygon () = default;
 
@@ -34,29 +38,27 @@ public:
 
   double get_area() const override;
 
-  void print_info() const override {
-    std::cout << "Polygon." << std::endl;
+  virtual std::string get_info() const override {
+    return "Polygon.";
   }
 
-protected:
-  std::vector<std::pair<double, double>>  points;
-  std::vector<double>                     sides;
+// protected:
+  std::vector<vec2d> points;
+  std::vector<double> sides;
 
-private:
+// private:
   virtual void calculate_sides() {
-    for (size_t i = 0; i < points.size() - 1; i++) {
-      sides.push_back(distance(points[i], points[i + 1]));
+    size_t size = std::size(points);
+    for (size_t i = 0; i < size; i++) {
+      sides.push_back(distance(points[i], points[(i + 1) % size]));
     }
-    sides.push_back(distance(points[0], points[points.size() - 1]));
   };
 };
 
 // Figure -> Polygon -> Triangle class
 class Triangle: public Polygon {
 public:
-  Triangle() = delete;
-
-  Triangle (const std::vector<std::pair<double, double>> points);
+  explicit Triangle (const std::vector<vec2d> points);
 
   virtual ~Triangle () = default;
 
@@ -66,45 +68,39 @@ public:
     return std::sqrt(p * (p-sides[0]) * (p-sides[1]) * (p-sides[2]));
   };
 
-  void print_info() const override {
-    std::cout << "Triangle." << std::endl;
+  virtual std::string get_info() const override {
+    return "Triangle.";
   }
 };
 
 // Figure -> Polygon -> Quadrangle class
 class Quadrangle: public Polygon {
 public:
-  Quadrangle () = delete;
-
-  Quadrangle (const std::vector<std::pair<double, double>> points);
+  explicit Quadrangle (const std::vector<vec2d> points);
 
   virtual ~Quadrangle () = default;
 
-  virtual void print_info() const override {
-    std::cout << "Quadrangle." << std::endl;
+  virtual std::string get_info() const override {
+    return "Quadrangle.";
   }
 };
 
 // Figure -> Polygon -> Quadrangle -> Parallelogram class
 class Parallelogram: public Quadrangle {
 public:
-  Parallelogram () = delete;
-
-  Parallelogram (const std::vector<std::pair<double, double>> points);
+  explicit Parallelogram (const std::vector<vec2d> points);
 
   virtual ~Parallelogram () = default;
 
-  virtual void print_info() const override {
-    std::cout << "Parallelogram." << std::endl;
+  virtual std::string get_info() const override {
+    return "Parallelogram.";
   }
 };
 
 // Figure -> Polygon -> Quadrangle -> Parallelogram -> Rhombus class
 class Rhombus: public virtual Parallelogram {
 public:
-  Rhombus () = delete;
-
-  Rhombus (const std::vector<std::pair<double, double>> points);
+  explicit Rhombus (const std::vector<vec2d> points);
 
   virtual ~Rhombus () = default;
 
@@ -119,17 +115,15 @@ public:
     return 0.5 * d1 * d2;
   }
 
-  virtual void print_info() const override {
-    std::cout << "Rhombus." << std::endl;
+  virtual std::string get_info() const override {
+    return "Rhombus.";
   }
 };
 
 // Figure -> Polygon -> Quadrangle -> Parallelogram -> Rectangle class
 class Rectangle: public virtual Parallelogram {
 public:
-  Rectangle () = delete;
-
-  Rectangle (const std::vector<std::pair<double, double>> points);
+  explicit Rectangle (const std::vector<vec2d> points);
 
   virtual ~Rectangle () = default;
 
@@ -137,15 +131,15 @@ public:
     return sides[0] * sides[1];
   }
 
-  virtual void print_info() const override {
-    std::cout << "Rectangle." << std::endl;
+  virtual std::string get_info() const override {
+    return "Rectangle.";
   }
 };
 
 // Figure -> Polygon -> Quadrangle -> Parallelogram -> Rectangle & Rhombus -> Square class
 class Square: public Rectangle, public Rhombus {
 public:
-  Square (const std::vector<std::pair<double, double>> points);
+  explicit Square (const std::vector<vec2d> points);
 
   virtual ~Square() = default;
 
@@ -154,20 +148,18 @@ public:
   };
 
   double get_area() const override final {
-    return Rectangle::get_perimeter();
+    return Rectangle::get_area();
   };
 
-  virtual void print_info() const override {
-    std::cout << "Square." << std::endl;
+  virtual std::string get_info() const override {
+    return "Square.";
   }
 };
 
 // Figure -> Ellipse class
 class Ellipse: public Figure2d {
 public:
-  Ellipse () = delete;
-
-  Ellipse (std::pair<double, double> center_, double a_, double b_):
+  explicit Ellipse (vec2d center_, double a_, double b_):
     center(center_), a(a_), b(b_) {  }
 
   virtual ~Ellipse () = default;
@@ -180,12 +172,12 @@ public:
     return pi * a * b;
   };
 
-  virtual void print_info() const override {
-    std::cout << "Ellipse. Сoefficients of canonical equation: a=" << a << " b=" << b << std::endl;
+  virtual std::string get_info() const override {
+    return "Ellipse. Сoefficients of canonical equation: a=" +  std::to_string(a) + " b=" + std::to_string(b);
   }
 
 protected:
-  std::pair<double, double> center;
+  vec2d center;
   double a;
 private:
   double b;
@@ -194,14 +186,12 @@ private:
 // Figure -> Ellipse -> Circle class
 class Circle: public Ellipse {
 public:
-  Circle() = delete;
-
-  Circle (std::pair<double, double> center, double radius):
+  explicit Circle (vec2d center, double radius):
     Ellipse(center, radius, radius) {  };
 
   virtual ~Circle () = default;
 
-  virtual void print_info() const override {
-    std::cout << "Circle. Radius: r=" << a << std::endl;
+  virtual std::string get_info() const override {
+    return "Circle. Radius: r=" + std::to_string(a);
   }
 };
