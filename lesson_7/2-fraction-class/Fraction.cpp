@@ -48,19 +48,14 @@ namespace math {
 
   std::istream & operator>> (std::istream & stream, Fraction & frac)
   {
-    std::string str_num;
-    std::string str_den;
-    std::string line;
-    size_t div_ind;
+    int num;
+    int den;
+    char delim;
 
-    stream >> line;
-    div_ind = line.find("/");
-
-    str_num = line.substr(0, div_ind);
-    str_den = line.substr(div_ind + 1, line.size() - div_ind - 1);
-
-    frac.numerator = std::stoi(str_num);
-    frac.denominator = std::stoi(str_den);
+    stream >> num >> delim >> den;
+    
+    frac.numerator = num;
+    frac.denominator = den;
 
     if (!frac.denominator) error(Exceptions::division_by_zero);
 
@@ -110,6 +105,9 @@ namespace math {
   {
     numerator *= other.denominator;
     denominator *= other.numerator;
+
+    if (!denominator)
+      error(Exceptions::division_by_zero);
 
     simplify();
 
