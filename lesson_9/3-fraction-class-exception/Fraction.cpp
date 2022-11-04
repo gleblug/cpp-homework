@@ -1,4 +1,5 @@
 #include "Fraction.hpp"
+#include "Exceptions.hpp"
 #include <string>
 #include <cmath>
 #include <iostream>
