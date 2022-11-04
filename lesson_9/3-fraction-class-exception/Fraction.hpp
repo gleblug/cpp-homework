@@ -37,10 +37,10 @@ namespace math {
     friend std::ostream & operator<< (std::ostream & stream, const Fraction & frac);
     friend std::istream & operator>> (std::istream & stream, Fraction & frac);
 
-    int get_numerator () const {
+    int get_numerator () const noexcept {
       return numerator;
     }
-    unsigned int get_denominator () const {
+    unsigned int get_denominator () const noexcept {
       return denominator;
     }
 
@@ -50,15 +50,15 @@ namespace math {
       return Fraction(denominator, numerator);
     };
 
-    int integer_part () const {
+    int integer_part () const noexcept {
       return numerator / denominator;
     };
 
-    Fraction fractional_part() const {
+    Fraction fractional_part() const noexcept {
       return Fraction(numerator - integer_part() * denominator, denominator);
     };
 
-    explicit operator double () const {
+    explicit operator double () const noexcept {
       return static_cast<double>(numerator) / denominator;
     };
 
