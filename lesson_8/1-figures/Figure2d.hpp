@@ -42,11 +42,11 @@ public:
     return "Polygon.";
   }
 
-// protected:
+protected:
   std::vector<vec2d> points;
   std::vector<double> sides;
 
-// private:
+private:
   virtual void calculate_sides() {
     size_t size = std::size(points);
     for (size_t i = 0; i < size; i++) {
