@@ -6,7 +6,7 @@ public:
 	double get_temperature() const
 	{
 		double t = 451.0;
-		// ... 
+		// ...
 		return t;
 	}
 };
