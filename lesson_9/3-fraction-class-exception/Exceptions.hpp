@@ -15,4 +15,4 @@ namespace math
         invalid_value(char value) : invalid_argument("Invalid value: " + value) {}
         invalid_value(std::string value) : invalid_argument("Invalid value: " + value) {}
     };
-} // namespace math
+}
