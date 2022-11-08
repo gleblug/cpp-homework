@@ -17,24 +17,24 @@ struct ReturnedValue {
 
 class Wallet {
 public:
-    Wallet(std::string bank_, double balance_) : bank(bank_), balance(balance_) {  }
+    Wallet(std::string const &bank_, double const balance_) : bank(bank_), balance(balance_) {  }
 
     std::variant<ExceptionCode, double> withdraw_money(double amount) {
         if (amount <= 0)
             return ExceptionCode::invalid_value;
-        else if (balance < amount) 
+        else if (balance < amount)
             return ExceptionCode::insufficient_funds;
-        
+
         balance -= amount;
         return balance;
     }
 
     ReturnedValue deposit_money(double amount) {
         ReturnedValue response;
-        if (amount <= 0)
+        if (amount <= 0) {
             response.has_exception = true;
             response.exception_code = ExceptionCode::invalid_value;
-
+        }
         balance += amount;
         response.value = balance;
 
@@ -53,7 +53,7 @@ int main(int argc, char const *argv[]) {
 
     // new withdraw action
     double to_withdraw = 10000;
-    std::variant<ExceptionCode, double> balance_after_withdraw = wallet.withdraw_money(to_withdraw);
+    auto balance_after_withdraw = wallet.withdraw_money(to_withdraw);
 
     if (std::holds_alternative<ExceptionCode>(balance_after_withdraw))
         std::cout << "Error code: " << static_cast<int>(std::get<ExceptionCode>(balance_after_withdraw)) << std::endl;
