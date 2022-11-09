@@ -40,7 +40,7 @@ namespace math {
     simplify();
   }
 
-  std::ostream & operator<< (std::ostream & stream, const Fraction & frac)
+  std::ostream & operator<< (std::ostream & stream, const Fraction & frac) noexcept
   {
     stream << frac.numerator << '/' << frac.denominator;
 
@@ -54,7 +54,7 @@ namespace math {
     char delim;
 
     stream >> num >> delim >> den;
-    
+
     frac.numerator = num;
     frac.denominator = den;
 
@@ -69,14 +69,14 @@ namespace math {
     return stream;
   }
 
-  void Fraction::simplify()
+  void Fraction::simplify() noexcept
   {
     int gcd = std::gcd(numerator, denominator);
     numerator /= gcd;
     denominator /= gcd;
   }
 
-  Fraction & Fraction::operator+=(const Fraction & other)
+  Fraction & Fraction::operator+=(const Fraction & other) noexcept
   {
     numerator = numerator * other.denominator + other.numerator * denominator;
     denominator = denominator * other.denominator;
@@ -86,7 +86,7 @@ namespace math {
     return (*this);
   }
 
-  Fraction & Fraction::operator-= (const Fraction & other)
+  Fraction & Fraction::operator-= (const Fraction & other) noexcept
   {
     numerator = numerator * other.denominator - other.numerator * denominator;
     denominator = denominator * other.denominator;
@@ -96,7 +96,7 @@ namespace math {
     return (*this);
   }
 
-  Fraction & Fraction::operator*= (const Fraction & other)
+  Fraction & Fraction::operator*= (const Fraction & other) noexcept
   {
     numerator *= other.numerator;
     denominator *= other.denominator;
@@ -119,59 +119,59 @@ namespace math {
     return (*this);
   }
 
-  Fraction operator+ (const Fraction & lhs, const Fraction & rhs) { return Fraction(lhs) += rhs; }
-  Fraction operator- (const Fraction & lhs, const Fraction & rhs) { return Fraction(lhs) -= rhs; }
-  Fraction operator* (const Fraction & lhs, const Fraction & rhs) { return Fraction(lhs) *= rhs; }
+  Fraction operator+ (const Fraction & lhs, const Fraction & rhs) noexcept { return Fraction(lhs) += rhs; }
+  Fraction operator- (const Fraction & lhs, const Fraction & rhs) noexcept { return Fraction(lhs) -= rhs; }
+  Fraction operator* (const Fraction & lhs, const Fraction & rhs) noexcept { return Fraction(lhs) *= rhs; }
   Fraction operator/ (const Fraction & lhs, const Fraction & rhs) { return Fraction(lhs) /= rhs; }
 
-  bool operator== (const Fraction & lhs, const Fraction & rhs)
+  bool operator== (const Fraction & lhs, const Fraction & rhs) noexcept
   {
     return (lhs.numerator == rhs.numerator) && (lhs.denominator == rhs.denominator);
   }
-  bool operator!= (const Fraction & lhs, const Fraction & rhs)
+  bool operator!= (const Fraction & lhs, const Fraction & rhs) noexcept
   {
     return !(lhs == rhs);
   }
 
-  bool operator< (const Fraction & lhs, const Fraction & rhs)
+  bool operator< (const Fraction & lhs, const Fraction & rhs) noexcept
   {
     return (lhs.numerator * rhs.denominator) < (rhs.numerator * lhs.denominator);
   }
-  bool operator> (const Fraction & lhs, const Fraction & rhs)
+  bool operator> (const Fraction & lhs, const Fraction & rhs) noexcept
   {
     return !((lhs < rhs) || (lhs == rhs));
   }
 
-  bool operator<= (const Fraction & lhs, const Fraction & rhs)
+  bool operator<= (const Fraction & lhs, const Fraction & rhs) noexcept
   {
     return !(lhs > rhs);
   }
-  bool operator>= (const Fraction & lhs, const Fraction & rhs)
+  bool operator>= (const Fraction & lhs, const Fraction & rhs) noexcept
   {
     return !(lhs < rhs);
   }
 
-  Fraction & Fraction::operator++()
+  Fraction & Fraction::operator++() noexcept
   {
     (*this) += 1;
 
     return (*this);
   }
-  Fraction & Fraction::operator--()
+  Fraction & Fraction::operator--() noexcept
   {
     (*this) -= 1;
 
     return (*this);
   }
 
-  Fraction Fraction::operator++(int)
+  Fraction Fraction::operator++(int) noexcept
   {
     Fraction temp(*this);
     ++(*this);
 
     return temp;
   }
-  Fraction Fraction::operator--(int)
+  Fraction Fraction::operator--(int) noexcept
   {
     Fraction temp(*this);
     --(*this);

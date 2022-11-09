@@ -6,7 +6,7 @@
  * \namespace math
  *
  * \brief Namespace that contains math tools like fractions etc
- * 
+ *
 */
 namespace math {
 
@@ -34,7 +34,7 @@ namespace math {
 
     ~Fraction () = default;
 
-    friend std::ostream & operator<< (std::ostream & stream, const Fraction & frac);
+    friend std::ostream & operator<< (std::ostream & stream, const Fraction & frac) noexcept;
     friend std::istream & operator>> (std::istream & stream, Fraction & frac);
 
     int get_numerator () const noexcept {
@@ -44,7 +44,7 @@ namespace math {
       return denominator;
     }
 
-    void simplify ();
+    void simplify () noexcept;
 
     Fraction reverse () const {
       return Fraction(denominator, numerator);
@@ -62,29 +62,29 @@ namespace math {
       return static_cast<double>(numerator) / denominator;
     };
 
-    Fraction & operator+= (const Fraction & other);
-    Fraction & operator-= (const Fraction & other);
-    Fraction & operator*= (const Fraction & other);
+    Fraction & operator+= (const Fraction & other) noexcept;
+    Fraction & operator-= (const Fraction & other) noexcept;
+    Fraction & operator*= (const Fraction & other) noexcept;
     Fraction & operator/= (const Fraction & other);
 
-    friend Fraction operator+ (const Fraction & lhs, const Fraction & rhs);
-    friend Fraction operator- (const Fraction & lhs, const Fraction & rhs);
-    friend Fraction operator* (const Fraction & lhs, const Fraction & rhs);
+    friend Fraction operator+ (const Fraction & lhs, const Fraction & rhs) noexcept;
+    friend Fraction operator- (const Fraction & lhs, const Fraction & rhs) noexcept;
+    friend Fraction operator* (const Fraction & lhs, const Fraction & rhs) noexcept;
     friend Fraction operator/ (const Fraction & lhs, const Fraction & rhs);
 
-    friend bool operator== (const Fraction & lhs, const Fraction & rhs);
-    friend bool operator!= (const Fraction & lhs, const Fraction & rhs);
+    friend bool operator== (const Fraction & lhs, const Fraction & rhs) noexcept;
+    friend bool operator!= (const Fraction & lhs, const Fraction & rhs) noexcept;
 
-    friend bool operator< (const Fraction & lhs, const Fraction & rhs);
-    friend bool operator> (const Fraction & lhs, const Fraction & rhs);
+    friend bool operator< (const Fraction & lhs, const Fraction & rhs) noexcept;
+    friend bool operator> (const Fraction & lhs, const Fraction & rhs) noexcept;
 
-    friend bool operator<=(const Fraction &lhs, const Fraction &rhs);
-    friend bool operator>=(const Fraction &lhs, const Fraction &rhs);
+    friend bool operator<=(const Fraction &lhs, const Fraction &rhs) noexcept;
+    friend bool operator>=(const Fraction &lhs, const Fraction &rhs) noexcept;
 
-    Fraction& operator++();
-    Fraction& operator--();
+    Fraction& operator++() noexcept;
+    Fraction& operator--() noexcept;
 
-    Fraction operator++(int);
-    Fraction operator--(int);
+    Fraction operator++(int) noexcept;
+    Fraction operator--(int) noexcept;
   };
 }

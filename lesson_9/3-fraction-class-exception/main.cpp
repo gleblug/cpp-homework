@@ -41,6 +41,13 @@ int main(int argc, char const *argv[]) {
               << "ERROR: " << e.what() << "\033[0m\n";
     exit(EXIT_FAILURE);
   }
-  
+  catch(...)
+  {
+    std::cerr << "\x1B[31m"
+              << "UNKNOWN ERROR"
+              << "\033[0m\n";
+    exit(EXIT_FAILURE);
+  }
+
   return EXIT_SUCCESS;
 }
