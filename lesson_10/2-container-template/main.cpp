@@ -8,5 +8,7 @@ int main(int argc, char const *argv[])
 
     std::cout << array << std::endl;
 
+    std::cout << array.reverse().append({6, 7, 8}).pop().reverse() << std::endl;
+
     return 0;
 }
