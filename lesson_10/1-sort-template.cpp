@@ -1,8 +1,7 @@
 #include <functional>
-#include <cstdlib>
 #include <iostream>
 #include <iterator>
-#include <ctime>
+#include <random>
 
 template <typename T>
 void merge_sort(
@@ -63,30 +62,41 @@ void merge_sort(
 
 int main(int argc, char const *argv[])
 {
-    std::srand(std::time(nullptr));
+    // random integers generator
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    std::uniform_int_distribution<int> dist(1, 100);
+    auto rand = [&]()->int { return dist(mt); };
 
     // new array
-    std::size_t size = 5;
-    int *array = new int[size];
+    const std::size_t size = 5; // ARRAY SIZE
+    int *dyn_array = new int[size];
+    int stat_array[size];
 
     // array out
     std::cout << "Array:" << std::endl;
-    for (int* a = array; std::distance(array, a) < size; std::advance(a, 1))
+    for (size_t i = 0; i < size; i++)
     {
-        *a = 1 + std::rand() / (static_cast<double>(RAND_MAX) / 100.0);
-        std::cout << *a << " ";
+        int a = rand();
+        dyn_array[i] = a;
+        stat_array[i] = a;
+
+        std::cout << a << ' ';
     }
     std::cout << std::endl;
 
     // sort array
-    merge_sort(array, size);
+    merge_sort(dyn_array, size);
 
     // sorted array out
-    std::cout << "Sorted array:\n";
-    for (int *a = array; std::distance(array, a) < size; std::advance(a, 1))
-    {
-        std::cout << *a << " ";
-    }
+    std::cout << "\nSorted dyn array:\n";
+    for (size_t i = 0; i < size; i++)
+        std::cout << dyn_array[i] << ' ';    
+    std::cout << std::endl;
+
+    std::cout << "\nSorted stat array:\n";
+    for (size_t i = 0; i < size; i++)
+        std::cout << stat_array[i] << ' ';
     std::cout << std::endl;
 
     return 0;
