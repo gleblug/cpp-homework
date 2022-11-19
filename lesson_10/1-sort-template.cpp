@@ -3,19 +3,22 @@
 #include <iterator>
 #include <random>
 
-template <typename T>
-void merge_sort(
-    T *array,
-    std::size_t size, 
-    std::function<bool(T, T)> comparator = [](T a, T b){ return a < b; }
-) {
+template <typename T, std::size_t N, typename F>
+void merge_sort(T (&array)[N], F &comparator)
+{
+    merge_sort(array, N, comparator);
+}
+
+template <typename T, typename F>
+void merge_sort(T *array, std::size_t const size, F &comparator)
+{
     if (size > 1)
     {
         std::size_t const left_size = size / 2;
         std::size_t const right_size = size - left_size;
 
-        merge_sort(&array[0], left_size);
-        merge_sort(&array[left_size], right_size);
+        merge_sort(&array[0], left_size, comparator);
+        merge_sort(&array[left_size], right_size, comparator);
 
         std::size_t left_ind = 0;
         std::size_t right_ind = left_size;
@@ -68,8 +71,11 @@ int main(int argc, char const *argv[])
     std::uniform_int_distribution<int> dist(1, 100);
     auto rand = [&]()->int { return dist(mt); };
 
-    // new array
-    const std::size_t size = 5; // ARRAY SIZE
+    // comparator
+    auto int_comparator = [](int a, int b)->bool { return a < b; };
+
+    // new arrays
+    std::size_t const size = 5; // ARRAY SIZE
     int *dyn_array = new int[size];
     int stat_array[size];
 
@@ -85,13 +91,14 @@ int main(int argc, char const *argv[])
     }
     std::cout << std::endl;
 
-    // sort array
-    merge_sort(dyn_array, size);
+    // sort arrays
+    merge_sort(dyn_array, size, int_comparator);
+    merge_sort(stat_array, int_comparator);
 
-    // sorted array out
+    // sorted arrays out
     std::cout << "\nSorted dyn array:\n";
     for (size_t i = 0; i < size; i++)
-        std::cout << dyn_array[i] << ' ';    
+        std::cout << dyn_array[i] << ' ';
     std::cout << std::endl;
 
     std::cout << "\nSorted stat array:\n";
