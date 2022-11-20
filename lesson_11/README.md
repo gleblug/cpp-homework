@@ -58,10 +58,7 @@ void print(Types... args)
     // int a = (args + ...);
 }
 
-
-
 // две пачки в одну функцию -- ?
-// эквивалентность f(args...) и f((args , ...))
 
 int main(int argc, char const *argv[])
 {
