@@ -5,7 +5,7 @@ template < typename T >
 class Counter 
 {
 protected:
-	
+
 	Counter() noexcept
 	{
 		++m_counter;
@@ -48,14 +48,15 @@ class String_2 : public Counter < String_2 < T > >
 {};
 
 int main(int argc, char ** argv)
-{
-	String_1 < char > s1, s2;
-	String_2 < wchar_t > ws;
+{	
+	{
+		String_1 < char > s1, s2;
+		String_2 < wchar_t > ws;
 
-	std::cout << "counter of String_1 < char >    : " << String_1 < char > ::counter() << std::endl;
-	std::cout << "counter of String_2 < wchar_t > : " << ws.counter() << std::endl;
-
-	system("pause");
-
+		std::cout << "counter of String_1 < char >    : " << String_1 < char > ::counter() << std::endl;
+		std::cout << "counter of String_2 < wchar_t > : " << ws.counter() << std::endl;
+	}
+	std::cout << "counter of String_1 < char >    : " << String_1<char>::counter() << std::endl;
+	std::cout << "counter of String_2 < wchar_t > : " << String_2<wchar_t>::counter() << std::endl;
 	return EXIT_SUCCESS;
 }

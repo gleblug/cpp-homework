@@ -50,7 +50,5 @@ int main(int argc, char ** argv)
 	render(circle);
 	render(triangle);
 
-	system("pause");
-
 	return EXIT_SUCCESS;
 }
