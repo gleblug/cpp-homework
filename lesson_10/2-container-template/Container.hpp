@@ -117,7 +117,7 @@ public:
 
     friend void std::swap<value_type>(Container<value_type> &lhs, Container<value_type> &rhs);
 
-    Container &resize(size_type new_size);
+    Container &resize(size_type new_size = m_size);
 
     Container &append(const_reference value)
     {
@@ -166,16 +166,8 @@ std::ostream &operator<<(std::ostream &stream, Container<T> const &container)
 template <typename T>
 void std::swap(Container<T> &lhs, Container<T> &rhs)
 {
-    size_t lhs_size = lhs.m_size;
-    T *lhs_data = lhs.m_data;
-
-    lhs.m_size = rhs.m_size;
-    lhs.m_data = rhs.m_data;
-
-    rhs.m_size = lhs_size;
-    rhs.m_data = lhs_data;
-
-    delete[] lhs_data;
+    std::swap(lhs.m_data, rhs.m_data);
+    std::swap(lhs.m_size, rhs.m_size);
 }
 
 template <typename T>
