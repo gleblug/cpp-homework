@@ -1,7 +1,7 @@
 *test*
 *.gch
 *.exe
-.vscode
+.*
 main
 test
 *.o
