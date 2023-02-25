@@ -3,10 +3,10 @@
 
 | Container    	| Sort time, ms | Sort type 	|
 |--------------	|---------------|---------------|
-| Array        	| 160			| Standart  	|
-| Vector       	| 310			| Standart  	|
-| Deque        	| 446			| Standart  	|
-| List         	| 909			| Member-fun 	|
-| Forward list 	| 2324			| Member-fun 	|
+| Array        	| 68			| Standart  	|
+| Vector       	| 68			| Standart  	|
+| Deque        	| 82			| Standart  	|
+| List         	| 311			| Member-fun 	|
+| Forward list 	| 2047			| Member-fun 	|
 
 Из таблицы видно, что быстрее всех сортируется контейнер `std::array`, а медленне всех `std::list` и `std::forward_list`, причём почти в 10 раз.
