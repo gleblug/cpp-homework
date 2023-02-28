@@ -8,15 +8,17 @@
 #include "../lesson-2-01/timer.hpp"
 
 
-void fill_random_numbers(uint* random_numbers, size_t N)
+std::vector<uint> get_random_numbers(size_t size)
 {
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> distrib(1, 1'000'000'000);
 
-    // std::vector<uint> random_numbers(size);
-    for (int i = 0; i < N; ++i)
-    	random_numbers[i] = distrib(gen);
+    std::vector<uint> random_numbers(size);
+    for (auto & v : random_numbers)
+    	v = distrib(gen);
+
+    return random_numbers;
 }
 
 void print_result(const std::string& message, const double time)
@@ -31,9 +33,9 @@ int main(int argc, char const *argv[])
 {
 	const size_t num_count = 4e6;
 	const size_t exp_count = 10;
+	const auto random_numbers = get_random_numbers(num_count);
 
-	uint* random_numbers = new uint[num_count];
-	fill_random_numbers(random_numbers, num_count);
+	std::cerr << "Complete fill random numbers\n";
 
 	std::set<uint> set;
 	std::vector<uint> vec;
@@ -53,8 +55,6 @@ int main(int argc, char const *argv[])
 	}
 
 	print_result("Fill set av time", timer.elapsed() / 10.0f);
-
-	delete[] random_numbers;
 
 	return 0;
 }
