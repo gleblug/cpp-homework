@@ -52,7 +52,6 @@ int main(int argc, char const *argv[])
 	}
 
 	print_result("\rFill set av time", timer.elapsed() / 10.0f);
-	// Fill set av time             4713.4 ms
 
 
 	// test sort vector
@@ -73,13 +72,17 @@ int main(int argc, char const *argv[])
 	}
 
 	print_result("\rSort vector av time", timer.elapsed() / 10.0f);
-	// Sort vector av time          250.7 ms
 
 /*
+
+Fill set av time             4713.4 ms
+Sort vector av time          250.7 ms
+
 Лучшим вариантом оказалось использование std::vector, получается быстрее более, чем в 10 раз.
 
 Компилятор:
 g++ (Ubuntu 11.3.0-1ubuntu1~22.04) 11.3.0
+
 */
 
 	return 0;
