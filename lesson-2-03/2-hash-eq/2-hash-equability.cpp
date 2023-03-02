@@ -102,18 +102,18 @@ int main(int argc, char const *argv[])
 {
 	const size_t types_count = 3;
 	const size_t log_max_num_count = std::stoi(argv[1]);
+	const size_t max_num_count = static_cast<size_t>(std::pow(10, log_max_num_count));
 	const size_t experiments_count = 20;
+
 
 	std::cout
 		<< "Count of collizions at " << types_count << " different values types\n"
 		<< "and " << experiments_count << " experiments of each iteration:\n\n"
-		<< "lg(num_count),\tmean_coll\tstd_deviation\n";
+		<< "num_count,\tmean_coll,\tstd_deviation\n";
 
-	for (size_t i = 1; i < log_max_num_count * 4; ++i)
+	for (size_t i = 0; i < max_num_count; i += 500)
 	{
-		const double log_num_count = static_cast<double>(i) / 4.0f;
-		const size_t each_num_count = 
-			static_cast<size_t>(pow(10, log_num_count)) / 3;
+		const size_t each_num_count = i / 3;
 
 		std::vector<size_t> collizion_data;
 
@@ -130,7 +130,7 @@ int main(int argc, char const *argv[])
 		auto [mean, std_dev] = standart_deviation(collizion_data);
 
 		std::cout 
-			<< log_num_count << "\t\t"
+			<< i << "\t\t"
 			<< mean << "\t\t" 
 			<< std_dev << "\n";
 	}
