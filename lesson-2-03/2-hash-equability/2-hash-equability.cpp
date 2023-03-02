@@ -100,16 +100,25 @@ std::pair<double, double> standart_deviation(const std::vector<T> &vec)
 
 int main(int argc, char const *argv[])
 {
+	const size_t max_num_count = std::stoi(argv[1]);
+
 	const size_t types_count = 3;
-	const size_t log_max_num_count = std::stoi(argv[1]);
-	const size_t max_num_count = static_cast<size_t>(std::pow(10, log_max_num_count));
 	const size_t experiments_count = 20;
 
+	std::string filename = "data.csv";
+	std::ofstream file(filename, std::ios::trunc);
+
+	if (!file)
+	{
+        std::cerr << "Cannot open file!\n";
+        return 1;
+	}
 
 	std::cout
 		<< "Count of collizions at " << types_count << " different values types\n"
 		<< "and " << experiments_count << " experiments of each iteration:\n\n"
 		<< "num_count,\tmean_coll,\tstd_deviation\n";
+	file << "num_count,mean,std\n";
 
 	for (size_t i = 0; i < max_num_count; i += 500)
 	{
@@ -133,6 +142,7 @@ int main(int argc, char const *argv[])
 			<< i << "\t\t"
 			<< mean << "\t\t" 
 			<< std_dev << "\n";
+		file << i << ',' << mean << ',' << std_dev << '\n';
 	}
 
 	return 0;
