@@ -22,20 +22,17 @@ std::vector<uint> get_random_numbers(size_t size)
     return std::move(random_numbers);
 }
 
+
 void print_result(const std::string& message, const double time)
 {
-	std::cout
-	<< std::setw(30) << std::left << message
-	<< std::right << time << " ms"
-	<< std::endl; 
+	std::cerr
+		<< std::setw(30) << std::left << message
+		<< std::right << time << " ms"
+		<< std::endl; 
 }
 
-int main(int argc, char const *argv[])
+void test_set_fill(const size_t exp_count, const std::vector<uint> &templ)
 {
-	const size_t num_count = 4e6;
-	const size_t exp_count = 10;
-	const auto random_numbers(get_random_numbers(num_count));
-
 	// test set
 	Timer timer;
 
@@ -43,40 +40,53 @@ int main(int argc, char const *argv[])
 	{
 		std::set<uint> set;
 		timer.start();
-		for (int j = 0; j < num_count; ++j)
-			set.insert(random_numbers[j]);
+		for (const auto &t : templ)
+			set.insert(t);
 		timer.stop();
 		std::cerr 
 			<< "\r[" << std::string(i, '=') << std::string(exp_count-i-1, ' ') << "] "
-			<< i * 10 << "% ";
+			<< i * 100 / exp_count << "% ";
 	}
 
-	print_result("\rFill set av time", timer.elapsed() / 10.0f);
+	print_result("\rFill set av time", timer.elapsed() / static_cast<double>(exp_count));
+}
 
-
+void test_vector_sort(const size_t exp_count, const std::vector<uint> &templ)
+{
 	// test sort vector
-	timer.restart();
+	Timer timer;
 
 	for (int i = 0; i < exp_count; ++i)
 	{
 		std::vector<uint> vec;
 
 		timer.start();
-		vec = random_numbers;
+		vec = templ;
 		std::sort(std::begin(vec), std::end(vec));
 		timer.stop();
 
 		std::cerr 
 			<< "\r[" << std::string(i, '=') << std::string(exp_count-i-1, ' ') << "] "
-			<< i * 10 << "% ";
+			<< i * 100 / exp_count << "% ";
 	}
 
-	print_result("\rSort vector av time", timer.elapsed() / 10.0f);
+	print_result("\rSort vector av time", timer.elapsed() / static_cast<double>(exp_count));
+}
 
+
+int main(int argc, char const *argv[])
+{
+	const size_t num_count = 4e6;
+	const size_t exp_count = 20;
+	const auto random_numbers(get_random_numbers(num_count));
+
+	test_set_fill(exp_count, random_numbers);
+
+	test_vector_sort(exp_count, random_numbers);
 /*
 
-Fill set av time             4713.4 ms
-Sort vector av time          250.7 ms
+Fill set av time             4867.3 ms
+Sort vector av time           282.5 ms
 
 Лучшим вариантом оказалось использование std::vector, получается быстрее более, чем в 10 раз.
 
