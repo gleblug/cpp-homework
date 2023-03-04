@@ -9,14 +9,13 @@
 #include "generator.hpp"
 #include "GeneralHashFunctions.h"
 
+
 std::pair<size_t, size_t> start_values(int argc, char const *argv[])
 {
 	size_t max_num_count = 10'000;
 	size_t step = 500;
 
 	switch (argc) {
-	case 1:
-		break;
 	case 2:
 		max_num_count = std::stoi(argv[1]);
 		break;
@@ -52,17 +51,17 @@ std::pair<double, double> standart_deviation(const std::vector<T> &vec)
 {
 	const double size = vec.size();
 	const double mean = 
-		std::accumulate(std::begin(vec), std::end(vec), 0.0f) / size;
+		std::accumulate(std::begin(vec), std::end(vec), 0) / size;
 	if (size <= 1)
 		return std::make_pair(mean, 0);
 
-	auto n_variance_func = [&size, &mean](T accumulator, const T &value) -> double
+	auto n_variance_func = [&mean](T accumulator, const T value) -> double
 	{
 		return accumulator + ((value - mean)*(value - mean));
 	};
 
 	const double variance = 
-		std::accumulate(std::begin(vec), std::end(vec), 0.0f, n_variance_func) / (size - 1.0f);
+		std::accumulate(std::begin(vec), std::end(vec), 0, n_variance_func) / (size - 1.0f);
 
 	return std::make_pair(mean, std::sqrt(variance / size));
 }

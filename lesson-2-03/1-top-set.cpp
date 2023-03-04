@@ -31,7 +31,7 @@ void print_result(const std::string& message, const double time)
 		<< std::endl; 
 }
 
-void test_set_fill(const size_t exp_count, const std::vector<uint> &templ)
+void test_set_fill(const size_t exp_count, const std::vector<uint> &random_numbers)
 {
 	// test set
 	Timer timer;
@@ -40,8 +40,8 @@ void test_set_fill(const size_t exp_count, const std::vector<uint> &templ)
 	{
 		std::set<uint> set;
 		timer.start();
-		for (const auto &t : templ)
-			set.insert(t);
+		for (const auto r : random_numbers)
+			set.insert(r);
 		timer.stop();
 		std::cerr 
 			<< "\r[" << std::string(i, '=') << std::string(exp_count-i-1, ' ') << "] "

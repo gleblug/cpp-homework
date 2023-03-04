@@ -26,9 +26,9 @@ T get_random_value()
 template <>
 int get_random_value<>()
 {
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> distrib(-2'147'483'648, 2'147'483'647);
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    static std::uniform_int_distribution<> distrib(-2'147'483'648, 2'147'483'647);
 
 	return distrib(gen);
 }
@@ -87,13 +87,13 @@ std::pair<double, double> standart_deviation(const std::vector<T> &vec)
 	if (size <= 1)
 		return std::make_pair(mean, 0);
 
-	auto n_variance_func = [&size, &mean](T accumulator, const T &value) -> double
+	auto n_variance_func = [&mean](T accumulator, const T value)
 	{
 		return accumulator + ((value - mean)*(value - mean));
 	};
 
 	const double variance = 
-		std::accumulate(std::begin(vec), std::end(vec), 0.0f, n_variance_func) / (size - 1.0f);
+		std::accumulate(std::begin(vec), std::end(vec), 0, n_variance_func) / (size - 1.0f);
 
 	return std::make_pair(mean, std::sqrt(variance / size));
 }
