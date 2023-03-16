@@ -1,5 +1,6 @@
 #include <cmath>
 #include <cstddef>
+#include <functional>
 #include <iostream>
 #include <iterator>
 #include <math.h>
@@ -132,9 +133,9 @@ int main(int argc, char const *argv[])
     print("reverse p3", p3);
 
     // @16 : top-3 elems
-    sort(begin(p3), end(p3));
+    nth_element(begin(p3), next(begin(p3)), end(p3), std::greater<elem_t>{});
     p_t top3;
-    copy(next(end(p3), -3), end(p3), back_inserter(top3));
+    copy(begin(p3), next(begin(p3), 3), back_inserter(top3));
     print("top3 ", top3);
 
     // @17 : sort p1 & p2
@@ -145,8 +146,8 @@ int main(int argc, char const *argv[])
     // @18 : union p1, p2
     p_t p4;
     p4.reserve(p1.size() + p2.size());
-    set_union(cbegin(p1), cend(p1), cbegin(p2), cend(p2), back_inserter(p4));
-    print("p4 is a union of p1 & p2", p4);
+    merge(cbegin(p1), cend(p1), cbegin(p2), cend(p2), back_inserter(p4));
+    print("p4 = merge p1 & p2", p4);
 
     // @19 : range to insert 1
     auto [first_one, last_one] = std::equal_range(cbegin(p4), cend(p4), 1);
