@@ -48,7 +48,8 @@ void view_directory(const std::filesystem::path & path)
 		for (const auto & entry : std::filesystem::directory_iterator(path))
 		{
 			auto file_name = entry.path().filename().string();
-
+			if (std::filesystem::is_directory(entry))
+				file_name += '/';
 			std::cout << file_name << std::endl;
 		}
 	}
