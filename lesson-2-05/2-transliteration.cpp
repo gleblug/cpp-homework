@@ -1,3 +1,4 @@
+#include <boost/locale/encoding_utf.hpp>
 #include <codecvt>
 #include <iostream>
 #include <ostream>
@@ -6,9 +7,12 @@
 
 #include <boost/locale/encoding.hpp>
 #include <boost/locale.hpp>
+#include <string_view>
 
 
-std::string convert_locale_to_utf(const std::string & string)
+using u32string = std::basic_string<char32_t>;
+
+std::string locale_to_utf8(const std::string & string)
 {
 	boost::locale::generator generator;
 	generator.locale_cache_enabled(true);
@@ -19,7 +23,7 @@ std::string convert_locale_to_utf(const std::string & string)
 	return boost::locale::conv::to_utf < char >(string, locale);
 }
 
-std::string convert_utf_to_locale(const std::string & string)
+std::string utf8_to_locale(const std::string & string)
 {
 	boost::locale::generator generator;
 	generator.locale_cache_enabled(true);
@@ -30,22 +34,29 @@ std::string convert_utf_to_locale(const std::string & string)
 	return boost::locale::conv::from_utf < char >(string, locale);
 }
 
-std::wstring convert_utf8_to_wstring(const std::string & string)
+u32string utf8_to_utf32(const std::string &string)
 {
-	std::wstring_convert < std::codecvt_utf8 < wchar_t > > converter;
-	return converter.from_bytes(string);
+	return boost::locale::conv::utf_to_utf<char32_t>(string);
 }
 
-std::string convert_wstring_to_utf8(const std::wstring & wstring)
+std::string utf32_to_utf8(const u32string &string)
 {
-	std::wstring_convert < std::codecvt_utf8 < wchar_t > > converter;
-	return converter.to_bytes(wstring);
+	return boost::locale::conv::utf_to_utf<char>(string);
+}
+
+
+template <typename CharT>
+void print_string(const std::basic_string<CharT> &string)
+{
+	for (const auto c : string)
+		std::cout << static_cast<uint>(c) << ' ';
+	std::cout << std::endl;
 }
 
 
 int main(int argc, char const *argv[])
 {
-	std::map<wchar_t, wchar_t> transliterate_table{
+	std::unordered_map<char32_t, char32_t> transliterate_table{
 		{L'а', 'a'},
 		{L'б', 'b'},
 		{L'в', 'v'},
@@ -87,15 +98,15 @@ int main(int argc, char const *argv[])
 	std::string locale_input;
 	std::getline(std::cin, locale_input);
 
-	std::string utf8_input = convert_locale_to_utf(locale_input);
-	std::wstring utf32_input = convert_utf8_to_wstring(utf8_input);
+	std::string utf8_input = locale_to_utf8(locale_input);
+	u32string utf32_input = utf8_to_utf32(utf8_input);
 
-	std::wstring utf32_output(utf32_input.size(), ' ');
+	u32string utf32_output(utf32_input.size(), ' ');
 	for (size_t i = 0; i < utf32_output.size(); ++i)
 		utf32_output[i] = transliterate_table[utf32_input[i]];
 
-	std::string utf8_output = convert_wstring_to_utf8(utf32_output);
-	std::string locale_output = convert_utf_to_locale(utf8_output);
+	std::string utf8_output = utf32_to_utf8(utf32_output);
+	std::string locale_output = utf8_to_locale(utf8_output);
 
 	std::cout << "\nTransliterated message:\n" << locale_output << std::endl;
 
