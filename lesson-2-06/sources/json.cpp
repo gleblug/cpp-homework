@@ -6,7 +6,7 @@
 #include <ostream>
 #include <iostream>
 
-#include "json.hpp"
+#include "../json.hpp"
 
 using nlohmann::json;
 
