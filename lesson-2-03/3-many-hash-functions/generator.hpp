@@ -3,7 +3,7 @@
 #include <set>
 #include <string>
 
-std::set < std::string > make_random_words(std::size_t N, std::size_t length) // length = 10 - good enough
+inline std::set < std::string > make_random_words(std::size_t N, std::size_t length) // length = 10 - good enough
 {
     std::uniform_int_distribution <> letter(97, 122);
     std::default_random_engine e(static_cast < std::size_t > (
